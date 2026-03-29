@@ -14,7 +14,7 @@ export default function Footer() {
           <div className={styles.brand}>
             <a href="#" className={styles.logo} aria-label="Dra. Celia Francisco da Silva — Topo da página">
               <img
-                src="/images/logos/logo-footer.png"
+                src={`${import.meta.env.BASE_URL}images/logos/logo-footer.png`}
                 alt="Celia Francisco da Silva — Advocacia e Consultoria Jurídica"
                 className={styles.logoImg}
                 onError={(e) => {

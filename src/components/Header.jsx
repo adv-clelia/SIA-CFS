@@ -59,7 +59,7 @@ export default function Header() {
         {/* Logo */}
         <a href="#" className={styles.logo} aria-label="Dra. Celia Francisco da Silva — Página inicial">
           <img
-            src="/images/logos/logo.png"
+            src={`${import.meta.env.BASE_URL}images/logos/logo.png`}
             alt=""
             aria-hidden="true"
             className={styles.logoImg}

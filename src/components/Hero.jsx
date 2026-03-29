@@ -78,7 +78,7 @@ export default function Hero() {
               {/* Substitua pelo: <img src="/images/foto-dra.jpg" alt="Dra. Celia Francisco da Silva" /> */}
               <div className={styles.photoInitials}>
                 <span>Dra.</span>
-                <span className={styles.photoInitialsName}>Celia</span>
+                <span className={styles.photoInitialsName}>Clelia</span>
               </div>
             </div>
             <div className={styles.photoAccent} />

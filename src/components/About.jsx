@@ -2,10 +2,26 @@ import { useScrollReveal } from '../hooks/useScrollReveal'
 import styles from './About.module.css'
 
 const credentials = [
-  { icon: '🎓', label: 'Formação',       value: 'Faculdade de Direito — [Universidade]' },
-  { icon: '📜', label: 'OAB',            value: 'Nº [00000] — [Estado]' },
-  { icon: '🏛️', label: 'Especialização', value: '[Área de especialização]' },
-  { icon: '📍', label: 'Atuação',        value: '[Cidade], [Estado]' },
+  {
+    label: 'Graduação',
+    value: 'Faculdade de Direito',
+    sub: 'Unisanta — Santos',
+  },
+  {
+    label: 'Pós-Graduação',
+    value: 'Direito Trabalhista',
+    sub: 'PUC — São Paulo',
+  },
+  {
+    label: 'OAB',
+    value: 'Nº 313.044 — SP',
+    sub: null,
+  },
+  {
+    label: 'Atuação',
+    value: 'Itanhaém, São Paulo',
+    sub: null,
+  },
 ]
 
 const values = ['Ética Profissional', 'Transparência', 'Dedicação', 'Resultados']
@@ -37,12 +53,12 @@ export default function About() {
 
             {/* Cartão de credenciais */}
             <dl className={styles.credCard} aria-label="Credenciais profissionais">
-              {credentials.map((c) => (
-                <div key={c.label} className={styles.credItem}>
-                  <span className={styles.credIcon} aria-hidden="true">{c.icon}</span>
+              {credentials.map((c, i) => (
+                <div key={c.label} className={`${styles.credItem} ${i < credentials.length - 1 ? styles.credItemBorder : ''}`}>
                   <div>
                     <dt className={styles.credLabel}>{c.label}</dt>
                     <dd className={styles.credValue}>{c.value}</dd>
+                    {c.sub && <dd className={styles.credSub}>{c.sub}</dd>}
                   </div>
                 </div>
               ))}
@@ -61,7 +77,7 @@ export default function About() {
             </h2>
 
             <p className={styles.body}>
-              Com mais de uma década de experiência, [Nome Completo] construiu uma carreira
+              Com mais de uma década de experiência, Clelia Francisco da Silva construiu uma carreira
               sólida baseada em princípios de ética, transparência e dedicação plena a cada
               cliente. Acreditamos que todo indivíduo merece representação jurídica de
               qualidade, independente da complexidade do caso.
@@ -85,6 +101,7 @@ export default function About() {
 
             <a href="#contato" className={styles.cta}>
               Agende uma conversa
+              <span className={styles.ctaArrow} aria-hidden="true">→</span>
             </a>
           </div>
         </div>

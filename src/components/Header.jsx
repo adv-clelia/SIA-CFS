@@ -98,13 +98,17 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Menu Mobile */}
+      {/* Menu Mobile
+          inert={!menuOpen || undefined}:
+            – menu fechado  → inert=true  → elemento e filhos inacessíveis por teclado/AT
+            – menu aberto   → inert=undefined → atributo removido do DOM
+          Compatível com React 19 (atributo booleano nativo do HTML). */}
       <nav
         id="mobile-menu"
         className={`${styles.mobileMenu} ${menuOpen ? styles.mobileOpen : ''}`}
         aria-label="Navegação mobile"
         aria-hidden={!menuOpen}
-        inert={!menuOpen ? '' : undefined}
+        inert={!menuOpen || undefined}
       >
         {navLinks.map((link) => (
           <a

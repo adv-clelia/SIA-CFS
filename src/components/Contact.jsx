@@ -1,38 +1,94 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
+import emailjs from '@emailjs/browser'
 import styles from './Contact.module.css'
 
+// ─────────────────────────────────────────────
+// Cole aqui suas credenciais do EmailJS
+// ─────────────────────────────────────────────
+const EMAILJS_SERVICE_ID  = 'service_p1qvbtj'
+const EMAILJS_TEMPLATE_ID = 'template_kniverq'
+const EMAILJS_PUBLIC_KEY  = 'GzORWCVcAi6I4mcHb'
+
+const MAPS_URL = 'https://maps.google.com/?q=Rua+Leopoldino+Araújo,+325,+Itanhaém,+SP'
+
+// Regex RFC-5322 simplificado — cobre 99 % dos casos reais
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+
 export default function Contact() {
-  const [form, setForm]     = useState({ nome: '', email: '', telefone: '', assunto: '', mensagem: '' })
-  const [sent, setSent]     = useState(false)
-  const [errors, setErrors] = useState({})
+  const formRef = useRef(null)
+
+  const [form, setForm]           = useState({ nome: '', email: '', telefone: '', assunto: '', mensagem: '' })
+  const [sent, setSent]           = useState(false)
+  const [sending, setSending]     = useState(false)
+  const [sendError, setSendError] = useState('')
+  const [errors, setErrors]       = useState({})
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
-    if (errors[e.target.name]) {
-      setErrors({ ...errors, [e.target.name]: '' })
-    }
+    if (errors[e.target.name]) setErrors({ ...errors, [e.target.name]: '' })
+    if (sendError) setSendError('')
   }
 
+  /* ── Validação client-side ── */
   const validate = () => {
     const newErrors = {}
-    if (!form.nome.trim())     newErrors.nome     = 'Por favor, informe seu nome.'
-    if (!form.email.trim())    newErrors.email    = 'Por favor, informe seu e-mail.'
-    if (!form.telefone.trim()) newErrors.telefone = 'Por favor, informe seu telefone.'
+
+    if (!form.nome.trim()) {
+      newErrors.nome = 'Por favor, informe seu nome.'
+    }
+
+    if (!form.email.trim()) {
+      newErrors.email = 'Por favor, informe seu e-mail.'
+    } else if (!EMAIL_REGEX.test(form.email.trim())) {
+      newErrors.email = 'Por favor, informe um e-mail válido.'
+    }
+
+    const digitsOnly = form.telefone.replace(/\D/g, '')
+    if (!form.telefone.trim()) {
+      newErrors.telefone = 'Por favor, informe seu telefone.'
+    } else if (digitsOnly.length < 10) {
+      newErrors.telefone = 'Informe um telefone com DDD e ao menos 8 dígitos.'
+    }
+
     return newErrors
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const newErrors = validate()
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
-      // Foca no primeiro campo com erro
-      const firstError = Object.keys(newErrors)[0]
-      document.getElementById(firstError)?.focus()
+      // Foca o primeiro campo inválido para leitores de tela
+      document.getElementById(Object.keys(newErrors)[0])?.focus()
       return
     }
-    // Ponto de integração: enviar para backend / WhatsApp / e-mail
-    setSent(true)
+
+    setSending(true)
+    setSendError('')
+
+    try {
+      await emailjs.sendForm(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        formRef.current,
+        EMAILJS_PUBLIC_KEY
+      )
+      setSent(true)
+    } catch (err) {
+      console.error('EmailJS error:', err)
+      setSendError('Não foi possível enviar a mensagem. Tente novamente ou entre em contato pelo WhatsApp.')
+    } finally {
+      setSending(false)
+    }
+  }
+
+  /* Reseta o formulário para enviar nova mensagem */
+  const handleReset = () => {
+    setForm({ nome: '', email: '', telefone: '', assunto: '', mensagem: '' })
+    setErrors({})
+    setSendError('')
+    setSent(false)
   }
 
   const contactInfo = [
@@ -66,7 +122,7 @@ export default function Contact() {
       ),
       label: 'Endereço',
       value: 'Rua Leopoldino Araújo, 325, Sala 2 — Centro, Itanhaém/SP',
-      href:  'https://maps.google.com/?q=Rua+Leopoldino+Araújo,+325,+Itanhaém,+SP',
+      href:  MAPS_URL,
     },
     {
       icon: (
@@ -84,7 +140,8 @@ export default function Contact() {
   return (
     <section id="contato" className={styles.section} aria-labelledby="contact-heading">
       <div className={styles.container}>
-        {/* Informações de contato */}
+
+        {/* ── Informações de contato ── */}
         <div className={styles.info}>
           <span className={styles.sectionTag} aria-hidden="true">03 — Contato</span>
           <h2 id="contact-heading" className={styles.title}>
@@ -133,16 +190,25 @@ export default function Contact() {
           </a>
         </div>
 
-        {/* Formulário */}
+        {/* ── Formulário ── */}
         <div className={styles.formWrap}>
           {sent ? (
-            <div className={styles.successMsg} role="status" aria-live="polite">
+            <div className={styles.successMsg} role="status" aria-live="polite" aria-atomic="true">
               <div className={styles.successIcon} aria-hidden="true">✓</div>
               <h3>Mensagem enviada!</h3>
               <p>Entraremos em contato em breve. Obrigada pelo interesse.</p>
+              <button
+                type="button"
+                className={styles.submit}
+                style={{ marginTop: '1rem', width: 'auto', padding: '0.75rem 1.75rem' }}
+                onClick={handleReset}
+              >
+                Enviar nova mensagem
+              </button>
             </div>
           ) : (
             <form
+              ref={formRef}
               className={styles.form}
               onSubmit={handleSubmit}
               noValidate
@@ -170,9 +236,7 @@ export default function Contact() {
                     aria-describedby={errors.nome ? 'nome-error' : undefined}
                   />
                   {errors.nome && (
-                    <span id="nome-error" className={styles.errorMsg} role="alert">
-                      {errors.nome}
-                    </span>
+                    <span id="nome-error" className={styles.errorMsg} role="alert">{errors.nome}</span>
                   )}
                 </div>
 
@@ -188,8 +252,9 @@ export default function Contact() {
                     name="telefone"
                     required
                     autoComplete="tel"
+                    inputMode="tel"
                     className={`${styles.input} ${errors.telefone ? styles.inputError : ''}`}
-                    placeholder="(XX) XXXXX-XXXX"
+                    placeholder="(13) 98214-8845"
                     value={form.telefone}
                     onChange={handleChange}
                     aria-required="true"
@@ -197,9 +262,7 @@ export default function Contact() {
                     aria-describedby={errors.telefone ? 'telefone-error' : undefined}
                   />
                   {errors.telefone && (
-                    <span id="telefone-error" className={styles.errorMsg} role="alert">
-                      {errors.telefone}
-                    </span>
+                    <span id="telefone-error" className={styles.errorMsg} role="alert">{errors.telefone}</span>
                   )}
                 </div>
               </div>
@@ -216,6 +279,7 @@ export default function Contact() {
                   name="email"
                   required
                   autoComplete="email"
+                  inputMode="email"
                   className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
                   placeholder="seu@email.com"
                   value={form.email}
@@ -225,9 +289,7 @@ export default function Contact() {
                   aria-describedby={errors.email ? 'email-error' : undefined}
                 />
                 {errors.email && (
-                  <span id="email-error" className={styles.errorMsg} role="alert">
-                    {errors.email}
-                  </span>
+                  <span id="email-error" className={styles.errorMsg} role="alert">{errors.email}</span>
                 )}
               </div>
 
@@ -265,16 +327,31 @@ export default function Contact() {
                 />
               </div>
 
-              <button type="submit" className={styles.submit}>
-                Enviar mensagem
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                  <line x1="22" y1="2" x2="11" y2="13" />
-                  <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                </svg>
+              {/* Erro de envio */}
+              {sendError && (
+                <p className={styles.errorMsg} role="alert" style={{ textAlign: 'center', fontSize: '0.82rem' }}>
+                  {sendError}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                className={styles.submit}
+                disabled={sending}
+                aria-busy={sending}
+              >
+                {sending ? 'Enviando…' : 'Enviar mensagem'}
+                {!sending && (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                    <line x1="22" y1="2" x2="11" y2="13" />
+                    <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                  </svg>
+                )}
               </button>
 
               <p id="form-privacy" className={styles.privacy}>
-                <span aria-hidden="true"></span> Suas informações são confidenciais e protegidas.
+                <span aria-hidden="true">🔒</span>{' '}
+                Suas informações são confidenciais e protegidas.
               </p>
             </form>
           )}

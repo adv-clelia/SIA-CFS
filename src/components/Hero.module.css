@@ -60,7 +60,7 @@
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-blue-accent);   /* era --color-blue-muted (3.1:1 ✗) → agora 7.5:1 ✓ */
+  color: var(--color-blue-accent);
   display: flex;
   align-items: center;
   gap: 0.875rem;
@@ -86,7 +86,7 @@
 }
 
 .titleAccent {
-  color: var(--color-blue-accent);   /* era --color-blue-muted */
+  color: var(--color-blue-accent);
   font-style: italic;
   font-weight: 400;
 }
@@ -94,7 +94,7 @@
 .subtitle {
   font-size: 1rem;
   font-weight: 400;
-  color: var(--color-text-secondary); /* 7.2:1 ✓  (era opacity 0.65) */
+  color: var(--color-text-secondary);
   line-height: 1.75;
   max-width: 48ch;
 }
@@ -136,7 +136,7 @@
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-text-secondary); /* era opacity 0.7 */
+  color: var(--color-text-secondary);
   transition: color var(--transition), gap var(--transition);
 }
 
@@ -156,7 +156,7 @@
 
 .stat {
   display: flex;
-  flex-direction: column-reverse; /* dt acima do dd visualmente invertido */
+  flex-direction: column-reverse;
   gap: 0.2rem;
 }
 
@@ -173,7 +173,7 @@
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-blue-accent); /* era --color-blue-muted */
+  color: var(--color-blue-accent);
 }
 
 .statDivider {
@@ -190,6 +190,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  /* garante que o badge nunca vaze do contêiner */
+  padding: 0 2rem 2rem;
 }
 
 .photoFrame {
@@ -247,11 +249,13 @@
   opacity: 0.55;
 }
 
-/* ── Badge flutuante ── */
+/* ── Badge flutuante ──
+   Usa left: 0 em desktop para não vazar em viewports menores.
+   O padding da .visual (2rem) absorve o deslocamento visual. */
 .badge {
   position: absolute;
   bottom: 2.5rem;
-  left: -2rem;
+  left: 0;
   background: var(--color-surface);
   border-radius: var(--radius-md);
   padding: 0.875rem 1.25rem;
@@ -276,7 +280,7 @@
 
 .badgeSub {
   font-size: 0.67rem;
-  color: var(--color-blue-accent); /* era --color-blue-muted */
+  color: var(--color-blue-accent);
   letter-spacing: 0.06em;
   margin-top: 1px;
 }
@@ -326,7 +330,10 @@
     grid-template-columns: 1fr;
     gap: 3rem;
   }
-  .visual { order: -1; }
+  .visual {
+    order: -1;
+    padding: 0 1rem 3rem;
+  }
   .photoFrame { width: 300px; }
   .badge { left: 0; bottom: -0.5rem; }
 }
@@ -337,4 +344,12 @@
   .scrollHint { display: none; }
   .br { display: none; }
   .brHidden { display: inline; }
+  .visual { padding: 0 0 3rem; }
+  .badge {
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    white-space: nowrap;
+    animation: none;
+  }
 }

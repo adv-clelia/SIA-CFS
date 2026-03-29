@@ -1,5 +1,20 @@
 import styles from './Footer.module.css'
 
+// Mapeia o índice de cada área para o disparo do evento
+const areas = [
+  { label: 'Direito de Família',    index: 0 },
+  { label: 'Direito Trabalhista',   index: 1 },
+  { label: 'Direito Imobiliário',   index: 2 },
+  { label: 'Direito do Consumidor', index: 3 },
+]
+
+function handleAreaClick(index) {
+  // Guarda no sessionStorage (caso precise rolar a página antes de montar o componente)
+  sessionStorage.setItem('openServiceIndex', index)
+  // Dispara evento customizado para quando o componente já está montado na tela
+  window.dispatchEvent(new CustomEvent('openService', { detail: { index } }))
+}
+
 export default function Footer() {
   const year = new Date().getFullYear()
 
@@ -69,13 +84,19 @@ export default function Footer() {
             <a href="#contato" className={styles.link}>Contato</a>
           </nav>
 
-          {/* Áreas */}
+          {/* Áreas — cada link abre a aba correspondente em Services */}
           <nav className={styles.linkGroup} aria-label="Áreas de atuação">
             <p className={styles.linkGroupTitle}>Áreas</p>
-            <a href="#atuacao" className={styles.link}>Direito de Família</a>
-            <a href="#atuacao" className={styles.link}>Direito Trabalhista</a>
-            <a href="#atuacao" className={styles.link}>Direito Imobiliário</a>
-            <a href="#atuacao" className={styles.link}>Direito do Consumidor</a>
+            {areas.map(({ label, index }) => (
+              <a
+                key={label}
+                href="#atuacao"
+                className={styles.link}
+                onClick={() => handleAreaClick(index)}
+              >
+                {label}
+              </a>
+            ))}
           </nav>
 
           {/* Contato */}

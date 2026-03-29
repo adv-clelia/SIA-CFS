@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import styles from './Services.module.css'
 
@@ -63,6 +63,25 @@ export default function Services() {
   const [headerRef, headerVisible] = useScrollReveal(0.1)
   const [gridRef,   gridVisible]   = useScrollReveal(0.05)
   const tabRefs                    = useRef([])
+
+  /* ── Escuta o evento customizado disparado pelo Footer ── */
+  useEffect(() => {
+    // Caso 1: usuário já está na página — recebe o evento direto
+    const handleOpenService = (e) => {
+      setActive(e.detail.index)
+    }
+    window.addEventListener('openService', handleOpenService)
+
+    // Caso 2: página acabou de carregar e havia um índice guardado no sessionStorage
+    // (ex.: o scroll ainda está acontecendo enquanto o componente monta)
+    const stored = sessionStorage.getItem('openServiceIndex')
+    if (stored !== null) {
+      setActive(parseInt(stored, 10))
+      sessionStorage.removeItem('openServiceIndex')
+    }
+
+    return () => window.removeEventListener('openService', handleOpenService)
+  }, [])
 
   /* Navegação por teclado — padrão ARIA Tablist */
   const handleKeyDown = useCallback((e, idx) => {

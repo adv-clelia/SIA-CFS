@@ -2,10 +2,10 @@ import styles from './Hero.module.css'
 
 export default function Hero() {
   return (
-    <section className={styles.hero}>
-      {/* Decorative background elements */}
-      <div className={styles.bgShape} />
-      <div className={styles.bgDot} />
+    <section className={styles.hero} aria-label="Apresentação">
+      {/* Elementos decorativos — ocultos para leitores de tela */}
+      <div className={styles.bgShape} aria-hidden="true" />
+      <div className={styles.bgDot}   aria-hidden="true" />
 
       <div className={styles.container}>
         <div className={styles.content}>
@@ -14,18 +14,18 @@ export default function Hero() {
             Advocacia &amp; Consultoria Jurídica
           </p>
 
-          {/* Main heading */}
+          {/* Título principal — único h1 na página */}
           <h1 className={`${styles.title} fade-up`} style={{ animationDelay: '0.25s' }}>
             Defendendo
             <br />
-            <span className={styles.titleAccent}>seus direitos</span>
+            <em className={styles.titleAccent}>seus direitos</em>
             <br />
             com excelência.
           </h1>
 
-          {/* Subtitle */}
           <p className={`${styles.subtitle} fade-up`} style={{ animationDelay: '0.4s' }}>
             Assessoria jurídica personalizada com ética, dedicação
+            <span className={styles.brHidden}> </span>
             <br className={styles.br} />
             e comprometimento com cada cliente.
           </p>
@@ -35,49 +35,63 @@ export default function Hero() {
             <a href="#contato" className={styles.btnPrimary}>
               Agendar Consulta
             </a>
-            <a href="#sobre" className={styles.btnSecondary}>
+            <a href="#sobre" className={styles.btnSecondary} aria-label="Conhecer mais sobre a Dra. Celia">
               Conheça mais
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg
+                width="16" height="16"
+                viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" strokeWidth="2"
+                aria-hidden="true"
+              >
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
             </a>
           </div>
 
           {/* Stats */}
-          <div className={`${styles.stats} fade-up`} style={{ animationDelay: '0.7s' }}>
+          <dl className={`${styles.stats} fade-up`} style={{ animationDelay: '0.7s' }}>
             <div className={styles.stat}>
-              <span className={styles.statNum}>10+</span>
-              <span className={styles.statLabel}>Anos de experiência</span>
+              <dt className={styles.statLabel}>Anos de experiência</dt>
+              <dd className={styles.statNum}>10+</dd>
             </div>
-            <div className={styles.statDivider} />
+            <div className={styles.statDivider} aria-hidden="true" />
             <div className={styles.stat}>
-              <span className={styles.statNum}>500+</span>
-              <span className={styles.statLabel}>Casos resolvidos</span>
+              <dt className={styles.statLabel}>Casos resolvidos</dt>
+              <dd className={styles.statNum}>500+</dd>
             </div>
-            <div className={styles.statDivider} />
+            <div className={styles.statDivider} aria-hidden="true" />
             <div className={styles.stat}>
-              <span className={styles.statNum}>98%</span>
-              <span className={styles.statLabel}>Satisfação dos clientes</span>
+              <dt className={styles.statLabel}>Satisfação dos clientes</dt>
+              <dd className={styles.statNum}>98%</dd>
             </div>
-          </div>
+          </dl>
         </div>
 
-        {/* Visual side */}
-        <div className={`${styles.visual} fade-in`} style={{ animationDelay: '0.3s' }}>
+        {/* Lado visual */}
+        <div
+          className={`${styles.visual} fade-in`}
+          style={{ animationDelay: '0.3s' }}
+          aria-hidden="true"
+        >
           <div className={styles.photoFrame}>
             <div className={styles.photoPlaceholder}>
-              {/* Replace with: <img src="/images/foto-dra.jpg" alt="Dra. [Nome]" /> */}
+              {/* Substitua pelo: <img src="/images/foto-dra.jpg" alt="Dra. Celia Francisco da Silva" /> */}
               <div className={styles.photoInitials}>
                 <span>Dra.</span>
-                <span className={styles.photoInitialsName}>[Nome]</span>
+                <span className={styles.photoInitialsName}>Celia</span>
               </div>
             </div>
             <div className={styles.photoAccent} />
           </div>
 
-          {/* Floating badge */}
+          {/* Badge flutuante */}
           <div className={styles.badge}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <svg
+              width="20" height="20"
+              viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" strokeWidth="1.5"
+              aria-hidden="true"
+            >
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
             </svg>
             <div>
@@ -88,8 +102,8 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className={styles.scrollHint}>
+      {/* Indicador de scroll */}
+      <div className={styles.scrollHint} aria-hidden="true">
         <div className={styles.scrollLine} />
         <span>role para baixo</span>
       </div>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import styles from './Services.module.css'
 
@@ -6,7 +6,7 @@ const services = [
   {
     id: '01',
     icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
         <circle cx="9" cy="7" r="4" />
         <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
@@ -21,7 +21,7 @@ const services = [
   {
     id: '02',
     icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
         <rect x="2" y="7" width="20" height="14" rx="2" />
         <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
       </svg>
@@ -34,7 +34,7 @@ const services = [
   {
     id: '03',
     icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
         <polyline points="9 22 9 12 15 12 15 22" />
       </svg>
@@ -47,7 +47,7 @@ const services = [
   {
     id: '04',
     icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
       </svg>
     ),
@@ -59,19 +59,38 @@ const services = [
 ]
 
 export default function Services() {
-  const [active, setActive] = useState(0)
+  const [active, setActive]        = useState(0)
   const [headerRef, headerVisible] = useScrollReveal(0.1)
-  const [gridRef, gridVisible] = useScrollReveal(0.05)
+  const [gridRef,   gridVisible]   = useScrollReveal(0.05)
+  const tabRefs                    = useRef([])
+
+  /* Navegação por teclado — padrão ARIA Tablist */
+  const handleKeyDown = useCallback((e, idx) => {
+    let next = -1
+    if (e.key === 'ArrowDown'  || e.key === 'ArrowRight') next = (idx + 1) % services.length
+    if (e.key === 'ArrowUp'    || e.key === 'ArrowLeft')  next = (idx - 1 + services.length) % services.length
+    if (e.key === 'Home') next = 0
+    if (e.key === 'End')  next = services.length - 1
+
+    if (next >= 0) {
+      e.preventDefault()
+      setActive(next)
+      tabRefs.current[next]?.focus()
+    }
+  }, [])
 
   return (
-    <section id="atuacao" className={styles.services}>
+    <section id="atuacao" className={styles.services} aria-labelledby="services-heading">
       <div className={styles.container}>
-        {/* Header */}
-        <div ref={headerRef} className={`${styles.header} ${headerVisible ? styles.reveal : styles.hidden}`}>
-          <span className={styles.sectionTag}>02 — Áreas de Atuação</span>
-          <h2 className={styles.title}>
+        {/* Cabeçalho */}
+        <div
+          ref={headerRef}
+          className={`${styles.header} ${headerVisible ? styles.reveal : styles.hidden}`}
+        >
+          <span className={styles.sectionTag} aria-hidden="true">02 — Áreas de Atuação</span>
+          <h2 id="services-heading" className={styles.title}>
             Como posso
-            <span className={styles.titleAccent}> te ajudar?</span>
+            <em className={styles.titleAccent}> te ajudar?</em>
           </h2>
           <p className={styles.subtitle}>
             Especialização em diversas áreas do Direito para oferecer
@@ -79,39 +98,62 @@ export default function Services() {
           </p>
         </div>
 
-        {/* Services grid */}
-        <div ref={gridRef} className={`${styles.grid} ${gridVisible ? styles.reveal : styles.hidden}`}>
-          {/* List */}
-          <div className={styles.list}>
+        {/* Grid de serviços */}
+        <div
+          ref={gridRef}
+          className={`${styles.grid} ${gridVisible ? styles.reveal : styles.hidden}`}
+        >
+          {/* Lista — tablist acessível */}
+          <div
+            role="tablist"
+            aria-label="Áreas de atuação"
+            className={styles.list}
+          >
             {services.map((s, i) => (
               <button
                 key={s.id}
+                role="tab"
+                id={`tab-${s.id}`}
+                aria-selected={active === i}
+                aria-controls={`panel-${s.id}`}
+                ref={(el) => (tabRefs.current[i] = el)}
                 className={`${styles.item} ${active === i ? styles.itemActive : ''}`}
                 onClick={() => setActive(i)}
+                onKeyDown={(e) => handleKeyDown(e, i)}
+                tabIndex={active === i ? 0 : -1}
               >
-                <span className={styles.itemNum}>{s.id}</span>
+                <span className={styles.itemNum} aria-hidden="true">{s.id}</span>
                 <div className={styles.itemText}>
-                  <div className={styles.itemTitle}>{s.title}</div>
-                  <div className={styles.itemShort}>{s.short}</div>
+                  <span className={styles.itemTitle}>{s.title}</span>
+                  <span className={styles.itemShort}>{s.short}</span>
                 </div>
-                <span className={styles.itemArrow}>→</span>
+                <span className={styles.itemArrow} aria-hidden="true">→</span>
               </button>
             ))}
           </div>
 
-          {/* Detail panel */}
-          <div className={styles.detail}>
-            <div className={styles.detailIcon}>{services[active].icon}</div>
-            <div className={styles.detailNum}>{services[active].id}</div>
-            <h3 className={styles.detailTitle}>{services[active].title}</h3>
-            <p className={styles.detailDesc}>{services[active].description}</p>
-            <a href="#contato" className={styles.detailCta}>
-              Consultar sobre este assunto
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </a>
-          </div>
+          {/* Painel de detalhes */}
+          {services.map((s, i) => (
+            <div
+              key={s.id}
+              role="tabpanel"
+              id={`panel-${s.id}`}
+              aria-labelledby={`tab-${s.id}`}
+              className={`${styles.detail} ${active === i ? styles.detailVisible : styles.detailHidden}`}
+              hidden={active !== i}
+            >
+              <div className={styles.detailIcon}>{s.icon}</div>
+              <div className={styles.detailNum} aria-hidden="true">{s.id}</div>
+              <h3 className={styles.detailTitle}>{s.title}</h3>
+              <p className={styles.detailDesc}>{s.description}</p>
+              <a href="#contato" className={styles.detailCta}>
+                Consultar sobre este assunto
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          ))}
         </div>
       </div>
     </section>

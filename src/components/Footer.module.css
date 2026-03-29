@@ -1,5 +1,5 @@
 .footer {
-  background: var(--color-navy);
+  background: var(--color-navy-section);
   padding: var(--spacing-lg) 2rem var(--spacing-md);
 }
 
@@ -8,46 +8,52 @@
   margin: 0 auto;
 }
 
-/* Top row */
+/* ── Linha superior ── */
 .top {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
   gap: 3rem;
   padding-bottom: 3rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  align-items: center; /* centraliza verticalmente */
 }
 
-/* Brand */
+/* ── Marca ── */
 .brand {
   display: flex;
   flex-direction: column;
+  align-items: center; /* centraliza tudo horizontalmente */
+  text-align: center;
   gap: 1.25rem;
 }
 
 .logo {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
+  border-radius: var(--radius-sm);
+  transition: opacity var(--transition);
 }
+.logo:hover { opacity: 0.85; }
 
 .logoImg {
-  height: 40px;
+  height: 180px;
   width: auto;
   object-fit: contain;
-  filter: brightness(0) invert(1);
-  opacity: 0.9;
+  opacity: 0.92;
 }
 
-.logoText {
+.logoFallback {
   display: flex;
   flex-direction: column;
-  line-height: 1.2;
+  align-items: center;
+  line-height: 1.3;
+  padding: 0.5rem;
 }
 
 .logoName {
   font-family: var(--font-display);
   font-size: 1.15rem;
-  color: white;
+  font-weight: 600;
+  color: #fff;
 }
 
 .logoSub {
@@ -55,73 +61,91 @@
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-blue-muted);
+  color: var(--color-rose-light);
 }
 
 .tagline {
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.78);
   line-height: 1.7;
+  text-align: center;
 }
 
-/* Socials */
+/* ── Redes sociais ── */
 .socials {
   display: flex;
   gap: 0.75rem;
+  justify-content: center;
 }
 
 .social {
   width: 36px;
   height: 36px;
-  border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.5);
-  transition: background var(--transition), color var(--transition), border-color var(--transition);
+  color: rgba(255, 255, 255, 0.72);
+  transition:
+    background var(--transition),
+    color var(--transition),
+    border-color var(--transition);
 }
 
 .social:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: white;
-  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
-/* Link groups */
+/* ── Grupos de links ── */
 .linkGroup {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  align-items: center;     /* centraliza horizontalmente */
+  justify-content: center; /* centraliza verticalmente */
+  text-align: center;
+  gap: 0.875rem;
 }
 
 .linkGroupTitle {
   font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-rose);
+  color: var(--color-rose-light);
   margin-bottom: 0.25rem;
 }
 
 .link {
-  font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.5);
-  transition: color var(--transition);
-  line-height: 1.3;
+  font-size: 0.83rem;
+  color: rgba(255, 255, 255, 0.72);
+  transition: color var(--transition), letter-spacing var(--transition);
+  line-height: 1.4;
+  border-radius: 2px;
 }
 
 .link:hover {
-  color: rgba(255, 255, 255, 0.9);
+  color: #fff;
+  letter-spacing: 0.01em;
 }
 
 .linkInfo {
-  font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.35);
-  line-height: 1.3;
+  font-size: 0.83rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.4;
 }
 
-/* Bottom bar */
+/* ── Divisor ── */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin-bottom: 0;
+}
+
+/* ── Barra inferior ── */
 .bottom {
   padding-top: 2rem;
   display: flex;
@@ -133,22 +157,21 @@
 
 .copy {
   font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.62);
 }
 
 .disclaimer {
   font-size: 0.68rem;
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.5);
   font-style: italic;
 }
 
-/* Responsive */
+/* ── Responsivo ── */
 @media (max-width: 1024px) {
   .top {
     grid-template-columns: 1fr 1fr;
     gap: 2.5rem;
   }
-
   .brand {
     grid-column: 1 / -1;
   }
@@ -158,19 +181,19 @@
   .footer {
     padding: var(--spacing-md) 1.25rem;
   }
-
   .top {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
-
   .brand {
     grid-column: auto;
   }
-
   .bottom {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
+  }
+  .logoImg {
+    height: 130px;
   }
 }

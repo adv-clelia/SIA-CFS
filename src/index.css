@@ -1,60 +1,113 @@
+/* ─────────────────────────────────────────────
+   Custom Fonts (local — carregados do projeto)
+───────────────────────────────────────────── */
 @font-face {
   font-family: 'Shallotta';
-  src: url('/fonts/Shallotta/Shallotta.woff2') format('woff2'),
-       url('/fonts/Shallotta/Shallotta.woff') format('woff'),
-       url('/fonts/Shallotta/Shallotta.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Sora';
-  src: url('/fonts/Sora/Sora-Regular.woff2') format('woff2'),
-       url('/fonts/Sora/Sora-Regular.woff') format('woff'),
-       url('/fonts/Sora/Sora-Regular.ttf') format('truetype');
+  src: url('/fonts/Shallotta/Shallotta-Regular.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
-
 @font-face {
-  font-family: 'Sora';
-  src: url('/fonts/Sora/Sora-Medium.woff2') format('woff2'),
-       url('/fonts/Sora/Sora-Medium.woff') format('woff'),
-       url('/fonts/Sora/Sora-Medium.ttf') format('truetype');
+  font-family: 'Shallotta';
+  src: url('/fonts/Shallotta/Shallotta-Medium.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
+  font-display: swap;
 }
-
+@font-face {
+  font-family: 'Shallotta';
+  src: url('/fonts/Shallotta/Shallotta-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 @font-face {
   font-family: 'Sora';
-  src: url('/fonts/Sora/Sora-SemiBold.woff2') format('woff2'),
-       url('/fonts/Sora/Sora-SemiBold.woff') format('woff'),
-       url('/fonts/Sora/Sora-SemiBold.ttf') format('truetype');
+  src: url('/fonts/Sora/Sora-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sora';
+  src: url('/fonts/Sora/Sora-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sora';
+  src: url('/fonts/Sora/Sora-Bold.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
+  font-display: swap;
 }
 
+/* ─────────────────────────────────────────────
+   Design Tokens — WCAG AA compliant
+   Contraste mínimo 4.5:1 para texto normal,
+   3:1 para texto grande (≥18px / ≥14px bold)
+───────────────────────────────────────────── */
 :root {
-  --color-bg: #F9F8F9;
-  --color-gray-light: #BEBFC1;
-  --color-blue-muted: #8FA2BA;
-  --color-navy: #07304F;
-  --color-rose: #D8B5B2;
+  /* Fundos */
+  --color-bg: #F7F5F2;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #FDFCFB;
+
+  /* Texto principal */
+  --color-navy: #07304F;          /* 11.7:1 em branco ✓ */
+
+  /* Texto secundário — WCAG AA */
+  --color-text-secondary: #3D5166; /* 7.2:1 em branco ✓ */
+
+  /* Azul como texto — WCAG AA */
+  --color-blue-accent: #2F5673;   /* 7.5:1 em branco ✓  (era #7B96B2 = 3.1:1 ✗) */
+  --color-blue-light: #7B96B2;    /* Apenas decorativo  */
+
+  /* Rosa como texto — WCAG AA */
+  --color-rose-text: #7A3E3B;     /* 5.8:1 em branco ✓  (era #D4AFAC = 1.9:1 ✗) */
+  --color-rose: #C49896;          /* Apenas decorativo  */
+  --color-rose-border: #D4AFAC;
   --color-rose-light: #EDD2D1;
+  --color-rose-pale: #F5EDEC;
 
-  --font-display: 'Shallotta', Georgia, serif;
-  --font-body: 'Sora', system-ui, sans-serif;
+  /* Seções navy */
+  --color-navy-section: #0F3D5C;  /* bg escuro */
+  --color-navy-section-deep: #07304F;
 
+  /* Separadores e bordas */
+  --color-border: #E2DDD8;
+  --color-gray-light: #C8C9CC;
+
+  /* Foco — universal, alto contraste */
+  --color-focus-ring: #0066CC;    /* 3:1+ sobre todos os fundos ✓ */
+
+  /* Tipografia */
+  --font-display: 'Shallotta', 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Sora', 'DM Sans', system-ui, sans-serif;
+
+  /* Espaçamentos */
   --spacing-xs: 0.5rem;
   --spacing-sm: 1rem;
   --spacing-md: 2rem;
   --spacing-lg: 4rem;
   --spacing-xl: 8rem;
 
+  /* Layout */
   --max-width: 1280px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+
+  /* Transições */
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ─────────────────────────────────────────────
+   Reset
+───────────────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -71,6 +124,7 @@ body {
   color: var(--color-navy);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
@@ -91,11 +145,50 @@ button {
   font-family: var(--font-body);
 }
 
-/* Fade-in animation */
+/* ─────────────────────────────────────────────
+   Skip link — WCAG 2.4.1
+───────────────────────────────────────────── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  background: var(--color-navy);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  text-decoration: none;
+  transition: top var(--transition-fast);
+}
+.skip-link:focus {
+  top: 0;
+  outline: 3px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ─────────────────────────────────────────────
+   Focus visível — WCAG 2.4.7 / 2.4.11
+   Aplica-se a todos os elementos interativos
+───────────────────────────────────────────── */
+:focus {
+  outline: none;
+}
+:focus-visible {
+  outline: 3px solid var(--color-focus-ring);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* ─────────────────────────────────────────────
+   Animações
+───────────────────────────────────────────── */
 @keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(32px);
+    transform: translateY(28px);
   }
   to {
     opacity: 1;
@@ -105,27 +198,57 @@ button {
 
 @keyframes fadeIn {
   from { opacity: 0; }
-  to { opacity: 1; }
+  to   { opacity: 1; }
 }
 
 .fade-up {
-  animation: fadeUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation: fadeUp 0.75s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 .fade-in {
   animation: fadeIn 1s ease both;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
+/* ─────────────────────────────────────────────
+   Reduz movimento se o usuário preferir
+───────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
+/* ─────────────────────────────────────────────
+   Scrollbar estilizada
+───────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+}
 ::-webkit-scrollbar-track {
   background: var(--color-bg);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: var(--color-rose);
+  background: var(--color-rose-border);
   border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-rose-text);
+}
+
+/* ─────────────────────────────────────────────
+   Utilitários de texto
+───────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

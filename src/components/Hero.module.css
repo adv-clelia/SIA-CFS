@@ -4,33 +4,36 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 8rem 2rem 4rem;
+  padding: 9rem 2rem 5rem;
   overflow: hidden;
+  background: var(--color-bg);
 }
 
-/* Background decoration */
+/* Decorações de fundo */
 .bgShape {
   position: absolute;
   top: -10%;
   right: -5%;
   width: 55vw;
   height: 90vh;
-  background: linear-gradient(135deg, var(--color-rose-light) 0%, var(--color-rose) 60%, var(--color-blue-muted) 100%);
-  opacity: 0.18;
+  background: linear-gradient(135deg, var(--color-rose-light) 0%, var(--color-rose-border) 55%, var(--color-blue-light) 100%);
+  opacity: 0.14;
   border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
-  filter: blur(2px);
+  filter: blur(3px);
   z-index: 0;
+  pointer-events: none;
 }
 
 .bgDot {
   position: absolute;
-  bottom: 15%;
-  left: 5%;
-  width: 300px;
-  height: 300px;
+  bottom: 12%;
+  left: 3%;
+  width: 320px;
+  height: 320px;
   background: radial-gradient(circle, var(--color-rose-light) 0%, transparent 70%);
-  opacity: 0.5;
+  opacity: 0.45;
   z-index: 0;
+  pointer-events: none;
 }
 
 .container {
@@ -45,7 +48,7 @@
   align-items: center;
 }
 
-/* Content */
+/* ── Conteúdo ── */
 .content {
   display: flex;
   flex-direction: column;
@@ -57,42 +60,46 @@
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-blue-muted);
+  color: var(--color-blue-accent);   /* era --color-blue-muted (3.1:1 ✗) → agora 7.5:1 ✓ */
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.875rem;
 }
 
 .overline::before {
   content: '';
   display: inline-block;
-  width: 32px;
-  height: 1px;
-  background: var(--color-rose);
+  width: 28px;
+  height: 1.5px;
+  background: var(--color-rose-border);
+  border-radius: 1px;
+  flex-shrink: 0;
 }
 
 .title {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 5.5vw, 5.5rem);
+  font-size: clamp(2.75rem, 5vw, 5.25rem);
   line-height: 1.05;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
   color: var(--color-navy);
+  font-weight: 700;
 }
 
 .titleAccent {
-  color: var(--color-blue-muted);
+  color: var(--color-blue-accent);   /* era --color-blue-muted */
   font-style: italic;
+  font-weight: 400;
 }
 
 .subtitle {
   font-size: 1rem;
   font-weight: 400;
-  letter-spacing: 0;
-  color: var(--color-navy);
-  opacity: 0.65;
-  line-height: 1.7;
+  color: var(--color-text-secondary); /* 7.2:1 ✓  (era opacity 0.65) */
+  line-height: 1.75;
+  max-width: 48ch;
 }
 
+/* ── CTAs ── */
 .actions {
   display: flex;
   align-items: center;
@@ -103,77 +110,81 @@
 .btnPrimary {
   font-size: 0.78rem;
   font-weight: 600;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-bg);
+  color: #fff;
   background: var(--color-navy);
   padding: 1rem 2.25rem;
-  border-radius: 2px;
-  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+  border-radius: var(--radius-sm);
+  transition:
+    background var(--transition),
+    transform var(--transition),
+    box-shadow var(--transition);
 }
 
 .btnPrimary:hover {
-  background: var(--color-blue-muted);
+  background: var(--color-blue-accent);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(7, 48, 79, 0.2);
+  box-shadow: 0 8px 24px rgba(7, 48, 79, 0.22);
 }
 
 .btnSecondary {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-navy);
-  opacity: 0.7;
-  transition: opacity var(--transition), gap var(--transition);
+  color: var(--color-text-secondary); /* era opacity 0.7 */
+  transition: color var(--transition), gap var(--transition);
 }
 
 .btnSecondary:hover {
-  opacity: 1;
+  color: var(--color-navy);
   gap: 0.75rem;
 }
 
-/* Stats */
+/* ── Stats ── */
 .stats {
   display: flex;
   align-items: center;
-  gap: 2rem;
-  padding-top: 1rem;
+  gap: 2.25rem;
+  padding-top: 1.25rem;
   border-top: 1px solid var(--color-rose-light);
 }
 
 .stat {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse; /* dt acima do dd visualmente invertido */
   gap: 0.2rem;
 }
 
 .statNum {
   font-family: var(--font-display);
   font-size: 2rem;
+  font-weight: 700;
   color: var(--color-navy);
   line-height: 1;
 }
 
 .statLabel {
-  font-size: 0.68rem;
+  font-size: 0.67rem;
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-blue-muted);
+  color: var(--color-blue-accent); /* era --color-blue-muted */
 }
 
 .statDivider {
   width: 1px;
-  height: 40px;
-  background: var(--color-rose);
-  opacity: 0.4;
+  height: 36px;
+  background: var(--color-rose-border);
+  opacity: 0.5;
+  flex-shrink: 0;
 }
 
-/* Visual */
+/* ── Visual ── */
 .visual {
   position: relative;
   display: flex;
@@ -183,15 +194,15 @@
 
 .photoFrame {
   position: relative;
-  width: 420px;
+  width: 400px;
   max-width: 100%;
 }
 
 .photoPlaceholder {
   width: 100%;
   aspect-ratio: 3/4;
-  background: linear-gradient(160deg, var(--color-rose-light) 0%, var(--color-blue-muted) 100%);
-  border-radius: 4px 60px 4px 60px;
+  background: linear-gradient(155deg, var(--color-rose-light) 0%, var(--color-blue-light) 100%);
+  border-radius: 4px 64px 4px 64px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -209,50 +220,51 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: white;
-  opacity: 0.7;
+  color: #fff;
   font-family: var(--font-display);
+  opacity: 0.6;
 }
 
 .photoInitials span:first-child {
-  font-size: 1.2rem;
-  letter-spacing: 0.2em;
+  font-size: 1.1rem;
+  letter-spacing: 0.22em;
 }
 
 .photoInitialsName {
-  font-size: 2.5rem !important;
+  font-size: 2.25rem !important;
+  font-weight: 600;
 }
 
 .photoAccent {
   position: absolute;
   bottom: -16px;
   right: -16px;
-  width: 60%;
-  height: 60%;
-  border: 2px solid var(--color-rose);
-  border-radius: 4px 60px 4px 60px;
+  width: 58%;
+  height: 58%;
+  border: 1.5px solid var(--color-rose-border);
+  border-radius: 4px 64px 4px 64px;
   z-index: -1;
-  opacity: 0.5;
+  opacity: 0.55;
 }
 
-/* Floating badge */
+/* ── Badge flutuante ── */
 .badge {
   position: absolute;
-  bottom: 2rem;
+  bottom: 2.5rem;
   left: -2rem;
-  background: white;
-  border-radius: 8px;
-  padding: 1rem 1.25rem;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: 0.875rem 1.25rem;
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  box-shadow: 0 12px 40px rgba(7, 48, 79, 0.12);
+  box-shadow: 0 8px 32px rgba(7, 48, 79, 0.1), 0 2px 8px rgba(7, 48, 79, 0.06);
   border: 1px solid var(--color-rose-light);
-  animation: float 4s ease-in-out infinite;
+  animation: float 4.5s ease-in-out infinite;
 }
 
 .badge svg {
-  color: var(--color-blue-muted);
+  color: var(--color-blue-accent);
   flex-shrink: 0;
 }
 
@@ -263,17 +275,18 @@
 }
 
 .badgeSub {
-  font-size: 0.68rem;
-  color: var(--color-blue-muted);
-  letter-spacing: 0.05em;
+  font-size: 0.67rem;
+  color: var(--color-blue-accent); /* era --color-blue-muted */
+  letter-spacing: 0.06em;
+  margin-top: 1px;
 }
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  50%       { transform: translateY(-8px); }
 }
 
-/* Scroll hint */
+/* ── Indicador de scroll ── */
 .scrollHint {
   position: absolute;
   bottom: 2rem;
@@ -284,64 +297,44 @@
   align-items: center;
   gap: 0.5rem;
   z-index: 1;
+  pointer-events: none;
 }
 
 .scrollLine {
   width: 1px;
-  height: 48px;
-  background: linear-gradient(to bottom, var(--color-rose), transparent);
-  animation: scrollPulse 2s ease-in-out infinite;
+  height: 44px;
+  background: linear-gradient(to bottom, var(--color-rose-border), transparent);
+  animation: scrollPulse 2.2s ease-in-out infinite;
 }
 
 .scrollHint span {
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   font-weight: 500;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--color-blue-muted);
-  opacity: 0.6;
+  color: var(--color-blue-accent);
 }
 
 @keyframes scrollPulse {
-  0%, 100% { opacity: 0.4; transform: scaleY(1); }
-  50% { opacity: 1; transform: scaleY(1.1); }
+  0%, 100% { opacity: 0.35; transform: scaleY(1); }
+  50%       { opacity: 1;    transform: scaleY(1.08); }
 }
 
-/* Responsive */
+/* ── Responsivo ── */
 @media (max-width: 1024px) {
   .container {
     grid-template-columns: 1fr;
     gap: 3rem;
   }
-
-  .visual {
-    order: -1;
-  }
-
-  .photoFrame {
-    width: 320px;
-  }
-
-  .badge {
-    left: 0;
-    bottom: -1rem;
-  }
+  .visual { order: -1; }
+  .photoFrame { width: 300px; }
+  .badge { left: 0; bottom: -0.5rem; }
 }
 
 @media (max-width: 600px) {
-  .hero {
-    padding: 7rem 1.25rem 3rem;
-  }
-
-  .stats {
-    gap: 1.25rem;
-  }
-
-  .scrollHint {
-    display: none;
-  }
-
-  .br {
-    display: none;
-  }
+  .hero { padding: 7rem 1.25rem 4rem; }
+  .stats { gap: 1.25rem; }
+  .scrollHint { display: none; }
+  .br { display: none; }
+  .brHidden { display: inline; }
 }

@@ -57,7 +57,7 @@ export default function Header() {
     >
       <div className={styles.inner}>
         {/* Logo */}
-        <a href="#" className={styles.logo} aria-label="Dra. Celia Francisco da Silva — Página inicial">
+        <a href="#" className={styles.logo} aria-label="Dra. Clelia Francisco da Silva — Página inicial">
           <img
             src={`${import.meta.env.BASE_URL}images/logos/logo.png`}
             alt=""

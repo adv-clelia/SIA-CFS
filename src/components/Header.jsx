@@ -66,7 +66,7 @@ export default function Header() {
             onError={(e) => { e.currentTarget.style.display = 'none' }}
           />
           <span className={styles.logoFallback}>
-            <span className={styles.logoName}>Dra. Celia Francisco da Silva</span>
+            <span className={styles.logoName}>Dra. Clelia Francisco da Silva</span>
             <span className={styles.logoSub}>Sociedade Individual de Advocacia</span>
           </span>
         </a>

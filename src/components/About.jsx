@@ -5,11 +5,11 @@ const credentials = [
   {
     label: 'Graduação',
     value: 'Faculdade de Direito',
-    sub: 'Unisanta — Santos',
+    sub: 'Unisantos — Santos',
   },
   {
     label: 'Pós-Graduação',
-    value: 'Direito Trabalhista',
+    value: 'Direito do Trabalho',
     sub: 'PUC — São Paulo',
   },
   {
@@ -19,7 +19,7 @@ const credentials = [
   },
   {
     label: 'Atuação',
-    value: 'Itanhaém, São Paulo',
+    value: 'Atuação em todo o território nacional, com ênfase na Baixada Santista',
     sub: null,
   },
 ]

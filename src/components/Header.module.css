@@ -62,7 +62,8 @@
   gap: 0.875rem;
   border-radius: var(--radius-xs);
   transition: opacity var(--transition-fast);
-  flex-shrink: 0;
+  flex-shrink: 1;   /* permite encolher se necessário */
+  min-width: 0;     /* permite que o conteúdo interno truncate */
 }
 
 .logo:hover { opacity: 0.8; }
@@ -71,7 +72,7 @@
   height: 68px;
   width: auto;
   object-fit: contain;
-  flex-shrink: 0;
+  flex-shrink: 0;   /* a imagem não encolhe, só o texto */
 }
 
 .logoFallback {
@@ -79,6 +80,7 @@
   flex-direction: column;
   line-height: 1.2;
   gap: 0.2rem;
+  min-width: 0;
 }
 
 .logoName {
@@ -87,6 +89,9 @@
   font-weight: 600;
   color: var(--color-navy);
   letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .logoSub {
@@ -96,6 +101,9 @@
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--color-navy);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ── Navegação Desktop ── */
@@ -176,6 +184,7 @@
   width: 40px;
   height: 40px;
   align-items: center;
+  flex-shrink: 0;   /* nunca deixa o botão ser espremido */
 }
 
 .hamburger:hover { background: var(--color-rose-pale); }
@@ -257,9 +266,10 @@
 }
 
 @media (max-width: 480px) {
-  .header          { padding: 1.1rem 1.5rem; }
-  .header.scrolled { padding: 0.8rem 1.5rem; }
+  .header          { padding: 1.1rem 1.25rem; }
+  .header.scrolled { padding: 0.8rem 1.25rem; }
+  .inner           { gap: 0.75rem; }
   .logoImg         { height: 54px; }
   .logoName        { font-size: 0.92rem; }
-  .logoSub         { letter-spacing: 0.18em; }
+  .logoSub         { letter-spacing: 0.18em; font-size: 0.52rem; }
 }

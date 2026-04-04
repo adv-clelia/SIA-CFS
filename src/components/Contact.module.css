@@ -76,16 +76,7 @@
   max-width: 44ch;
 }
 
-/* ── Linha decorativa separadora ── */
-.hero::after {
-  content: '';
-  display: block;
-  width: 48px;
-  height: 2px;
-  background: linear-gradient(to right, var(--brand-rose), var(--brand-blush));
-  border-radius: 1px;
-  margin-top: 0.5rem;
-}
+
 
 /* ── Corpo ── */
 .container {
@@ -279,7 +270,6 @@
   color: var(--color-navy);
   font-weight: 500;
   transition: color var(--transition);
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   display: block;
@@ -337,6 +327,9 @@ a.contactValue:hover { color: var(--color-rose-text); }
   font-size: 0.76rem;
   color: var(--color-text-muted);
   line-height: 1.65;
+}
+.qrTap{
+  font-weight: bold;
 }
 
 /* ── Botão WhatsApp ── */
@@ -639,11 +632,22 @@ a.contactValue:hover { color: var(--color-rose-text); }
 }
 
 @media (max-width: 700px) {
-  .hero { padding: 6rem 1.5rem 3.5rem; }
-  .container { padding: 0 1.5rem 5rem; }
-  .formWrap { padding: 2.5rem 1.5rem 2rem; }
+  .hero { padding: 6rem 1.25rem 2.5rem; }
+  .container { padding: 0 1.25rem 4rem; }
+  .formWrap { padding: 2rem 1.25rem 1.75rem; }
   .formRow { grid-template-columns: 1fr; }
   .qrCard { grid-template-columns: 1fr; justify-items: center; text-align: center; }
   .qrWrap { width: 160px; height: 160px; }
   .qrWrap svg { width: 136px !important; height: 136px !important; }
+
+  /* Permite quebra de linha em textos longos (ex: endereço) */
+  .contactValue { white-space: normal; word-break: break-word; }
+
+  /* Reduz padding interno dos cards para caber na tela */
+  .contactItem { padding: 0.85rem 0.9rem; gap: 0.75rem; }
+  .contactIcon { width: 34px; height: 34px; flex-shrink: 0; }
+
+  /* Profile card menor */
+  .profileCard { padding: 1.1rem; gap: 1rem; }
+  .photoWrap { width: 72px; height: 72px; }
 }

@@ -80,7 +80,7 @@ export default function Hero() {
         >
           <div className={styles.photoFrame}>
             <div className={styles.photoPlaceholder}>
-              {/* Substitua por: <img src="/images/foto-dra.jpg" alt="Dra. Clelia Francisco da Silva" /> */}
+              <img src={`${import.meta.env.BASE_URL}images/doutora/dra-frente.png`} alt="Dra. Clelia Francisco da Silva" /> 
               <div className={styles.photoInitials}>
                 <span>Dra.</span>
                 <span className={styles.photoInitialsName}>Clelia</span>

@@ -47,7 +47,7 @@ export default function About() {
           >
             <div className={styles.imageWrap}>
               <div className={styles.imagePlaceholder}>
-                {/* Substitua por: <img src="/images/foto-sobre.jpg" alt="Dra. Celia Francisco da Silva" /> */}
+                <img src={`${import.meta.env.BASE_URL}images/doutora/dra.png`} alt="Dra. Celia Francisco da Silva" />
                 <span className={styles.imgLabel} aria-hidden="true">Dra. Celia</span>
               </div>
               <div className={styles.imageFrame} aria-hidden="true" />

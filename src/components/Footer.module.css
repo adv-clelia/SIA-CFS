@@ -164,7 +164,8 @@
   margin-bottom: 0.5rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px solid rgba(122, 62, 59, 0.15);
-  width: 100%;
+  width: auto;
+  align-self: stretch;
   text-align: center;
 }
 
@@ -173,14 +174,13 @@
   color: var(--color-text-secondary);
   line-height: 1.5;
   border-radius: var(--radius-xs);
-  transition: color var(--transition), transform var(--transition);
+  transition: color var(--transition);
   display: block;
   text-align: center;
 }
 
 .link:hover {
   color: var(--color-navy);
-  transform: translateX(3px);
 }
 
 .linkInfo {
@@ -188,6 +188,11 @@
   color: var(--color-text-secondary);
   line-height: 1.5;
   text-align: center;
+}
+
+.linkGhost {
+  visibility: hidden;
+  pointer-events: none;
 }
 
 /* ── Divisor ── */
@@ -251,5 +256,5 @@
     gap: 0.5rem;
   }
   .logoImg { height: 120px; }
-  .link:hover { transform: none; }
+  .linkGhost { display: none; }
 }

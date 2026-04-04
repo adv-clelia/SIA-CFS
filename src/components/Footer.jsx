@@ -106,6 +106,7 @@ export default function Footer() {
             <a href="#sobre"   className={styles.link} onClick={(e) => handleSectionLink(e, '#sobre')}>Sobre</a>
             <a href="#atuacao" className={styles.link} onClick={(e) => handleSectionLink(e, '#atuacao')}>Áreas de Atuação</a>
             <a href="#contato" className={styles.link} onClick={handleContactLink}>Contato</a>
+            <span className={`${styles.link} ${styles.linkGhost}`} aria-hidden="true">—</span>
           </nav>
 
           {/* Áreas — cada link abre a aba correspondente em Services */}

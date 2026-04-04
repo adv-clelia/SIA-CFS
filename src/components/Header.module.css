@@ -1,22 +1,49 @@
+/* ── Header ──────────────────────────────────────────────────────────────── */
+
 .header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  padding: 1.25rem 2rem;
+  padding: 1.5rem 2.5rem;
   transition:
     background var(--transition),
     box-shadow var(--transition),
-    padding var(--transition);
+    padding var(--transition),
+    backdrop-filter var(--transition);
+}
+
+/* Linha fina decorativa no topo */
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-rose-border) 20%,
+    var(--brand-rose) 50%,
+    var(--color-rose-border) 80%,
+    transparent
+  );
+  opacity: 0;
+  transition: opacity var(--transition);
 }
 
 .header.scrolled {
-  background: rgba(247, 245, 242, 0.97);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 1px 0 var(--color-border), 0 2px 16px rgba(7, 48, 79, 0.06);
-  padding: 0.875rem 2rem;
+  background: rgba(253, 250, 249, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 1px 0 var(--color-border), 0 4px 24px rgba(122, 62, 59, 0.06);
+  padding: 1rem 2.5rem;
+}
+
+.header.scrolled::before {
+  opacity: 1;
 }
 
 .inner {
@@ -25,7 +52,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 /* ── Logo ── */
@@ -33,13 +60,15 @@
   display: flex;
   align-items: center;
   gap: 0.875rem;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-xs);
   transition: opacity var(--transition-fast);
+  flex-shrink: 0;
 }
-.logo:hover { opacity: 0.85; }
+
+.logo:hover { opacity: 0.8; }
 
 .logoImg {
-  height: 72px;
+  height: 68px;
   width: auto;
   object-fit: contain;
   flex-shrink: 0;
@@ -48,12 +77,13 @@
 .logoFallback {
   display: flex;
   flex-direction: column;
-  line-height: 1.25;
+  line-height: 1.2;
+  gap: 0.2rem;
 }
 
 .logoName {
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   color: var(--color-navy);
   letter-spacing: -0.01em;
@@ -61,67 +91,77 @@
 
 .logoSub {
   font-family: var(--font-body);
-  font-size: 0.6rem;
-  font-weight: 500;
-  letter-spacing: 0.22em;
+  font-size: 0.57rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--color-blue-accent); /* era --color-blue-muted (falha WCAG) */
+  color: var(--color-rose-text);
 }
 
 /* ── Navegação Desktop ── */
 .nav {
   display: flex;
   align-items: center;
-  gap: 2.25rem;
+  gap: 2.5rem;
 }
 
 .navLink {
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-text-secondary);
   position: relative;
-  padding-bottom: 2px;
-  border-radius: 2px;
+  padding-bottom: 3px;
+  border-radius: var(--radius-xs);
   transition: color var(--transition-fast);
 }
 
+/* Sublinha animada */
 .navLink::after {
   content: '';
   position: absolute;
-  bottom: -3px;
+  bottom: -1px;
   left: 0;
   width: 0;
-  height: 1.5px;
-  background: var(--color-rose-text);
+  height: 1px;
+  background: var(--brand-rose);
   border-radius: 1px;
   transition: width var(--transition);
 }
 
 .navLink:hover {
-  color: var(--color-navy);
+  color: var(--color-rose-text);
 }
+
 .navLink:hover::after {
   width: 100%;
 }
 
+/* CTA principal */
 .ctaBtn {
-  font-size: 0.73rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
   font-weight: 600;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: #fff;
-  background: var(--color-navy);
+  background: var(--color-rose-text);
   padding: 0.65rem 1.5rem;
-  border-radius: var(--radius-sm);
-  transition: background var(--transition), transform var(--transition);
+  border-radius: var(--radius-xl);
   white-space: nowrap;
+  transition:
+    background var(--transition),
+    transform var(--transition),
+    box-shadow var(--transition);
 }
 
 .ctaBtn:hover {
-  background: var(--color-blue-accent);
+  background: var(--color-navy);
   transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(7, 48, 79, 0.2);
 }
 
 /* ── Hamburger ── */
@@ -130,112 +170,96 @@
   flex-direction: column;
   justify-content: center;
   gap: 5px;
-  padding: 6px;
+  padding: 8px;
   border-radius: var(--radius-sm);
   transition: background var(--transition-fast);
+  width: 40px;
+  height: 40px;
+  align-items: center;
 }
-.hamburger:hover {
-  background: var(--color-rose-pale);
-}
+
+.hamburger:hover { background: var(--color-rose-pale); }
 
 .hamburger span {
   display: block;
-  width: 22px;
-  height: 2px;
+  width: 20px;
+  height: 1.5px;
   background: var(--color-navy);
   border-radius: 1px;
   transition: all var(--transition);
   transform-origin: center;
 }
 
-.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(1) { transform: translateY(6.5px)  rotate(45deg); }
 .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
 /* ── Menu Mobile ── */
 .mobileMenu {
   display: none;
   flex-direction: column;
   background: var(--color-surface);
-  padding: 0 2rem;
+  padding: 0 2.5rem;
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-              padding 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    max-height 0.38s cubic-bezier(0.4, 0, 0.2, 1),
+    padding var(--transition);
   border-top: 1px solid transparent;
 }
 
 .mobileMenu.mobileOpen {
-  max-height: 500px;
-  padding: 1.25rem 2rem 2rem;
-  border-top-color: var(--color-border);
-  box-shadow: 0 8px 32px rgba(7, 48, 79, 0.08);
+  max-height: 520px;
+  padding: 1.5rem 2.5rem 2.5rem;
+  border-top-color: var(--color-border-light);
+  box-shadow: 0 12px 40px rgba(122, 62, 59, 0.08);
 }
 
 .mobileLink {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 0.875rem 0;
-  border-bottom: 1px solid var(--color-rose-light);
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--color-border-light);
   color: var(--color-navy);
   transition: color var(--transition-fast), padding-left var(--transition);
-  border-radius: 2px;
 }
 
 .mobileLink:hover {
-  color: var(--color-blue-accent);
+  color: var(--color-rose-text);
   padding-left: 0.5rem;
 }
 
 .mobileCta {
   display: block;
-  margin-top: 1.25rem;
-  font-size: 0.78rem;
+  margin-top: 1.5rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: #fff;
-  background: var(--color-navy);
+  background: var(--color-rose-text);
   padding: 1rem 1.5rem;
   text-align: center;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-xl);
   transition: background var(--transition);
 }
 
-.mobileCta:hover {
-  background: var(--color-blue-accent);
-}
+.mobileCta:hover { background: var(--color-navy); }
 
 /* ── Breakpoints ── */
 @media (max-width: 768px) {
-  .nav {
-    display: none;
-  }
-  .hamburger {
-    display: flex;
-  }
-  .mobileMenu {
-    display: flex;
-  }
+  .nav        { display: none; }
+  .hamburger  { display: flex; }
+  .mobileMenu { display: flex; }
 }
 
 @media (max-width: 480px) {
-  .header {
-    padding: 1rem 1.25rem;
-  }
-  .header.scrolled {
-    padding: 0.75rem 1.25rem;
-  }
-  .logoImg {
-    height: 56px;
-  }
-  .logoName {
-    font-size: 0.95rem;
-  }
-  .logoSub {
-    font-size: 0.55rem;
-  }
+  .header          { padding: 1.1rem 1.5rem; }
+  .header.scrolled { padding: 0.8rem 1.5rem; }
+  .logoImg         { height: 54px; }
+  .logoName        { font-size: 0.92rem; }
+  .logoSub         { letter-spacing: 0.18em; }
 }

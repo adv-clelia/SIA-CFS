@@ -1,17 +1,19 @@
 import { useState, useEffect, useRef } from 'react'
 import styles from './Header.module.css'
+import { useNavigation } from '../context/NavigationContext'
 
 const navLinks = [
-  { href: '#sobre', label: 'Sobre' },
+  { href: '#sobre',   label: 'Sobre' },
   { href: '#atuacao', label: 'Áreas de Atuação' },
   { href: '#contato', label: 'Contato' },
 ]
 
 export default function Header() {
-  const [scrolled, setScrolled]   = useState(false)
-  const [menuOpen, setMenuOpen]   = useState(false)
-  const menuRef                   = useRef(null)
-  const hamburgerRef              = useRef(null)
+  const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const menuRef                 = useRef(null)
+  const hamburgerRef            = useRef(null)
+  const { page, navigate }      = useNavigation()
 
   /* Detecta scroll */
   useEffect(() => {
@@ -49,6 +51,31 @@ export default function Header() {
     return () => { document.body.style.overflow = '' }
   }, [menuOpen])
 
+  /* Intercepta cliques nos links de navegação */
+  const handleNavClick = (e, href) => {
+    if (href === '#contato') {
+      e.preventDefault()
+      navigate('contact')
+      setMenuOpen(false)
+    } else if (page === 'contact') {
+      /* Estamos na página de contato — navega para home e rola até a seção */
+      e.preventDefault()
+      navigate('home', href)
+      setMenuOpen(false)
+    } else {
+      /* Home page: comportamento padrão de âncora */
+      setMenuOpen(false)
+    }
+  }
+
+  /* Logo volta para home */
+  const handleLogoClick = (e) => {
+    if (page === 'contact') {
+      e.preventDefault()
+      navigate('home')
+    }
+  }
+
   return (
     <header
       className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}
@@ -57,7 +84,12 @@ export default function Header() {
     >
       <div className={styles.inner}>
         {/* Logo */}
-        <a href="#" className={styles.logo} aria-label="Dra. Clelia Francisco da Silva — Página inicial">
+        <a
+          href={`${import.meta.env.BASE_URL}`}
+          className={styles.logo}
+          aria-label="Dra. Clelia Francisco da Silva — Página inicial"
+          onClick={handleLogoClick}
+        >
           <img
             src={`${import.meta.env.BASE_URL}images/logos/logo.png`}
             alt=""
@@ -74,11 +106,20 @@ export default function Header() {
         {/* Navegação Desktop */}
         <nav className={styles.nav} aria-label="Navegação principal">
           {navLinks.map((link) => (
-            <a key={link.href} href={link.href} className={styles.navLink}>
+            <a
+              key={link.href}
+              href={link.href}
+              className={styles.navLink}
+              onClick={(e) => handleNavClick(e, link.href)}
+            >
               {link.label}
             </a>
           ))}
-          <a href="#contato" className={styles.ctaBtn}>
+          <a
+            href="#contato"
+            className={styles.ctaBtn}
+            onClick={(e) => handleNavClick(e, '#contato')}
+          >
             Fale Conosco
           </a>
         </nav>
@@ -98,11 +139,7 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Menu Mobile
-          inert={!menuOpen || undefined}:
-            – menu fechado  → inert=true  → elemento e filhos inacessíveis por teclado/AT
-            – menu aberto   → inert=undefined → atributo removido do DOM
-          Compatível com React 19 (atributo booleano nativo do HTML). */}
+      {/* Menu Mobile */}
       <nav
         id="mobile-menu"
         className={`${styles.mobileMenu} ${menuOpen ? styles.mobileOpen : ''}`}
@@ -115,7 +152,7 @@ export default function Header() {
             key={link.href}
             href={link.href}
             className={styles.mobileLink}
-            onClick={() => setMenuOpen(false)}
+            onClick={(e) => handleNavClick(e, link.href)}
             tabIndex={menuOpen ? 0 : -1}
           >
             {link.label}
@@ -124,7 +161,7 @@ export default function Header() {
         <a
           href="#contato"
           className={styles.mobileCta}
-          onClick={() => setMenuOpen(false)}
+          onClick={(e) => handleNavClick(e, '#contato')}
           tabIndex={menuOpen ? 0 : -1}
         >
           Fale Conosco

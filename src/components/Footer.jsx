@@ -1,4 +1,5 @@
 import styles from './Footer.module.css'
+import { useNavigation } from '../context/NavigationContext'
 
 // Mapeia o índice de cada área para o disparo do evento
 const areas = [
@@ -8,15 +9,33 @@ const areas = [
   { label: 'Direito do Consumidor', index: 3 },
 ]
 
-function handleAreaClick(index) {
-  // Guarda no sessionStorage (caso precise rolar a página antes de montar o componente)
+function handleAreaClick(index, navigate, page) {
   sessionStorage.setItem('openServiceIndex', index)
-  // Dispara evento customizado para quando o componente já está montado na tela
-  window.dispatchEvent(new CustomEvent('openService', { detail: { index } }))
+  if (page === 'contact') {
+    navigate('home', '#atuacao')
+  } else {
+    window.dispatchEvent(new CustomEvent('openService', { detail: { index } }))
+    document.querySelector('#atuacao')?.scrollIntoView({ behavior: 'smooth' })
+  }
 }
 
 export default function Footer() {
-  const year = new Date().getFullYear()
+  const year             = new Date().getFullYear()
+  const { page, navigate } = useNavigation()
+
+  const handleContactLink = (e) => {
+    e.preventDefault()
+    navigate('contact')
+  }
+
+  const handleSectionLink = (e, hash) => {
+    e.preventDefault()
+    if (page === 'contact') {
+      navigate('home', hash)
+    } else {
+      document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
 
   return (
     <footer className={styles.footer} role="contentinfo">
@@ -27,7 +46,12 @@ export default function Footer() {
 
           {/* Marca */}
           <div className={styles.brand}>
-            <a href="#" className={styles.logo} aria-label="Dra. Celia Francisco da Silva — Topo da página">
+            <a
+              href={`${import.meta.env.BASE_URL}`}
+              className={styles.logo}
+              aria-label="Dra. Celia Francisco da Silva — Topo da página"
+              onClick={(e) => { e.preventDefault(); navigate('home') }}
+            >
               <img
                 src={`${import.meta.env.BASE_URL}images/logos/logo-footer.png`}
                 alt="Celia Francisco da Silva — Advocacia e Consultoria Jurídica"
@@ -79,9 +103,9 @@ export default function Footer() {
           {/* Navegação */}
           <nav className={styles.linkGroup} aria-label="Navegação rodapé">
             <p className={styles.linkGroupTitle}>Navegação</p>
-            <a href="#sobre"   className={styles.link}>Sobre</a>
-            <a href="#atuacao" className={styles.link}>Áreas de Atuação</a>
-            <a href="#contato" className={styles.link}>Contato</a>
+            <a href="#sobre"   className={styles.link} onClick={(e) => handleSectionLink(e, '#sobre')}>Sobre</a>
+            <a href="#atuacao" className={styles.link} onClick={(e) => handleSectionLink(e, '#atuacao')}>Áreas de Atuação</a>
+            <a href="#contato" className={styles.link} onClick={handleContactLink}>Contato</a>
           </nav>
 
           {/* Áreas — cada link abre a aba correspondente em Services */}
@@ -92,7 +116,7 @@ export default function Footer() {
                 key={label}
                 href="#atuacao"
                 className={styles.link}
-                onClick={() => handleAreaClick(index)}
+                onClick={(e) => { e.preventDefault(); handleAreaClick(index, navigate, page) }}
               >
                 {label}
               </a>

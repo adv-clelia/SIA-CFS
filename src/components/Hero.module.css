@@ -1,41 +1,70 @@
+/* ── Hero ───────────────────────────────────────────────────────────────── */
+
 .hero {
   position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 9rem 2rem 5rem;
+  padding: 10rem 2.5rem 6rem;
   overflow: hidden;
   background: var(--color-bg);
 }
 
-/* Decorações de fundo */
+/* Gradiente hero→about removido — transição limpa entre seções */
+
+/* Mancha orgânica — canto direito superior */
 .bgShape {
   position: absolute;
   top: -10%;
   right: -5%;
   width: 55vw;
   height: 90vh;
-  background: linear-gradient(135deg, var(--color-rose-light) 0%, var(--color-rose-border) 55%, var(--color-blue-light) 100%);
-  opacity: 0.14;
-  border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
-  filter: blur(3px);
+  background: radial-gradient(
+    ellipse at 60% 40%,
+    rgba(237, 208, 206, 0.55) 0%,
+    rgba(200, 165, 162, 0.18) 45%,
+    transparent 70%
+  );
+  border-radius: 60% 40% 70% 30% / 45% 60% 40% 55%;
+  filter: blur(2px);
   z-index: 0;
   pointer-events: none;
+  animation: morphBlob 18s ease-in-out infinite alternate;
 }
 
+@keyframes morphBlob {
+  0%   { border-radius: 60% 40% 70% 30% / 45% 60% 40% 55%; }
+  33%  { border-radius: 55% 45% 65% 35% / 50% 55% 45% 50%; }
+  66%  { border-radius: 65% 35% 60% 40% / 40% 65% 35% 60%; }
+  100% { border-radius: 58% 42% 68% 32% / 48% 58% 42% 52%; }
+}
+
+/* Orbe suave — canto esquerdo inferior */
 .bgDot {
   position: absolute;
-  bottom: 12%;
-  left: 3%;
-  width: 320px;
-  height: 320px;
-  background: radial-gradient(circle, var(--color-rose-light) 0%, transparent 70%);
-  opacity: 0.45;
+  bottom: 10%;
+  left: -2%;
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(232, 208, 206, 0.45) 0%, transparent 65%);
   z-index: 0;
   pointer-events: none;
 }
 
+/* Grade decorativa sutil */
+.bgGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(200, 165, 162, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200, 165, 162, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Container */
 .container {
   position: relative;
   z-index: 1;
@@ -43,60 +72,61 @@
   margin: 0 auto;
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 5rem;
   align-items: center;
 }
 
-/* ── Conteúdo ── */
+/* ── Coluna de conteúdo ── */
 .content {
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
+  gap: 2rem;
 }
 
+/* Overline com linha decorativa */
 .overline {
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--color-blue-accent);
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.875rem;
+  gap: 1rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--color-rose-text);
 }
 
-.overline::before {
-  content: '';
+.overlineDash {
   display: inline-block;
-  width: 28px;
-  height: 1.5px;
-  background: var(--color-rose-border);
+  width: 32px;
+  height: 1px;
+  background: var(--brand-rose);
   border-radius: 1px;
   flex-shrink: 0;
 }
 
+/* Título — destaque máximo com Shallotta */
 .title {
   font-family: var(--font-display);
-  font-size: clamp(2.75rem, 5vw, 5.25rem);
-  line-height: 1.05;
-  letter-spacing: -0.015em;
+  font-size: clamp(3rem, 5.5vw, 6rem);
+  line-height: 1.0;
+  letter-spacing: -0.02em;
   color: var(--color-navy);
   font-weight: 700;
 }
 
+/* Mesmo estilo do título — sem quebra de cor ou fonte */
 .titleAccent {
-  color: var(--color-blue-accent);
-  font-style: italic;
-  font-weight: 400;
+  color: inherit;
+  font-style: normal;
 }
 
 .subtitle {
   font-size: 1rem;
   font-weight: 400;
   color: var(--color-text-secondary);
-  line-height: 1.75;
-  max-width: 48ch;
+  line-height: 1.8;
+  max-width: 46ch;
 }
 
 /* ── CTAs ── */
@@ -105,17 +135,18 @@
   align-items: center;
   gap: 1.5rem;
   flex-wrap: wrap;
+  padding-top: 0.5rem;
 }
 
 .btnPrimary {
-  font-size: 0.78rem;
+  font-size: 0.73rem;
   font-weight: 600;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: #fff;
-  background: var(--color-navy);
-  padding: 1rem 2.25rem;
-  border-radius: var(--radius-sm);
+  background: var(--color-rose-text);
+  padding: 1.05rem 2.5rem;
+  border-radius: var(--radius-xl);
   transition:
     background var(--transition),
     transform var(--transition),
@@ -123,92 +154,121 @@
 }
 
 .btnPrimary:hover {
-  background: var(--color-blue-accent);
+  background: var(--color-navy);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(7, 48, 79, 0.22);
+  box-shadow: 0 10px 30px rgba(43, 22, 18, 0.18);
 }
 
 .btnSecondary {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.78rem;
+  font-size: 0.73rem;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-text-secondary);
-  transition: color var(--transition), gap var(--transition);
+  color: var(--color-rose-text);
+  border-bottom: 1px solid var(--color-rose-border);
+  padding-bottom: 2px;
+  transition: color var(--transition), border-color var(--transition), gap var(--transition);
 }
 
 .btnSecondary:hover {
   color: var(--color-navy);
+  border-color: var(--color-navy);
   gap: 0.75rem;
 }
 
 /* ── Stats ── */
 .stats {
   display: flex;
-  align-items: center;
-  gap: 2.25rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--color-rose-light);
+  align-items: stretch;
+  gap: 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+  margin-top: 0.5rem;
 }
 
 .stat {
   display: flex;
-  flex-direction: column-reverse;
-  gap: 0.2rem;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0 2rem 0 0;
 }
+
+.stat:first-child { padding-left: 0; }
 
 .statNum {
   font-family: var(--font-display);
-  font-size: 2rem;
+  font-size: 2.25rem;
   font-weight: 700;
-  color: var(--color-navy);
+  color: var(--color-rose-text);
   line-height: 1;
+  letter-spacing: -0.02em;
 }
 
 .statLabel {
-  font-size: 0.67rem;
+  font-size: 0.62rem;
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-blue-accent);
+  color: var(--color-text-muted);
+  max-width: 12ch;
+  line-height: 1.4;
 }
 
 .statDivider {
   width: 1px;
-  height: 36px;
-  background: var(--color-rose-border);
-  opacity: 0.5;
+  align-self: stretch;
+  background: var(--color-border);
+  margin: 0 2rem 0 0;
   flex-shrink: 0;
 }
 
-/* ── Visual ── */
+/* ── Coluna visual ── */
 .visual {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* garante que o badge nunca vaze do contêiner */
-  padding: 0 2rem 2rem;
+  padding: 2rem 2rem 3rem;
 }
 
 .photoFrame {
   position: relative;
-  width: 400px;
+  width: 380px;
   max-width: 100%;
 }
 
 .photoPlaceholder {
   width: 100%;
   aspect-ratio: 3/4;
-  background: linear-gradient(155deg, var(--color-rose-light) 0%, var(--color-blue-light) 100%);
-  border-radius: 4px 64px 4px 64px;
+  background: linear-gradient(
+    150deg,
+    var(--color-rose-light)  0%,
+    var(--brand-rose)        55%,
+    var(--color-rose-pale)   100%
+  );
+  border-radius: 8px 80px 8px 80px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  position: relative;
+}
+
+/* Textura sutil no placeholder */
+.photoPlaceholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 20px,
+    rgba(255,255,255,0.04) 20px,
+    rgba(255,255,255,0.04) 40px
+  );
 }
 
 .photoPlaceholder img {
@@ -216,140 +276,154 @@
   height: 100%;
   object-fit: cover;
   object-position: top center;
+  position: relative;
+  z-index: 1;
 }
 
 .photoInitials {
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #fff;
+  color: rgba(43, 22, 18, 0.3);
   font-family: var(--font-display);
-  opacity: 0.6;
+  position: relative;
+  z-index: 1;
 }
 
 .photoInitials span:first-child {
-  font-size: 1.1rem;
-  letter-spacing: 0.22em;
+  font-size: 1rem;
+  letter-spacing: 0.28em;
 }
 
 .photoInitialsName {
-  font-size: 2.25rem !important;
+  font-size: 2.5rem !important;
   font-weight: 600;
+  letter-spacing: -0.01em !important;
 }
 
+/* Moldura decorativa deslocada — mais refinada */
 .photoAccent {
   position: absolute;
-  bottom: -16px;
-  right: -16px;
-  width: 58%;
-  height: 58%;
-  border: 1.5px solid var(--color-rose-border);
-  border-radius: 4px 64px 4px 64px;
+  bottom: -20px;
+  right: -20px;
+  width: 55%;
+  height: 55%;
+  border: 1px solid var(--color-rose-border);
+  border-radius: 8px 80px 8px 80px;
   z-index: -1;
-  opacity: 0.55;
+  opacity: 0.45;
 }
 
-/* ── Badge flutuante ──
-   Usa left: 0 em desktop para não vazar em viewports menores.
-   O padding da .visual (2rem) absorve o deslocamento visual. */
+/* Segunda moldura — profundidade */
+.photoAccent2 {
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  width: 30%;
+  height: 30%;
+  border: 1px solid var(--color-rose-light);
+  border-radius: 50%;
+  z-index: -1;
+  opacity: 0.3;
+}
+
+/* ── Badge flutuante ── */
 .badge {
   position: absolute;
   bottom: 2.5rem;
-  left: 0;
+  left: -1rem;
   background: var(--color-surface);
-  border-radius: var(--radius-md);
-  padding: 0.875rem 1.25rem;
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.4rem;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  box-shadow: 0 8px 32px rgba(7, 48, 79, 0.1), 0 2px 8px rgba(7, 48, 79, 0.06);
-  border: 1px solid var(--color-rose-light);
-  animation: float 4.5s ease-in-out infinite;
+  gap: 0.875rem;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-border-light);
+  animation: float 5s ease-in-out infinite;
 }
 
-.badge svg {
-  color: var(--color-blue-accent);
-  flex-shrink: 0;
-}
+.badge svg { color: var(--color-rose-text); flex-shrink: 0; }
 
 .badgeTitle {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--color-navy);
 }
 
 .badgeSub {
-  font-size: 0.67rem;
-  color: var(--color-blue-accent);
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
   letter-spacing: 0.06em;
   margin-top: 1px;
 }
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-8px); }
+  50%       { transform: translateY(-10px); }
 }
 
 /* ── Indicador de scroll ── */
 .scrollHint {
   position: absolute;
-  bottom: 2rem;
+  bottom: 2.5rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  z-index: 1;
+  gap: 0.6rem;
+  z-index: 3;
   pointer-events: none;
 }
 
 .scrollLine {
   width: 1px;
-  height: 44px;
+  height: 48px;
   background: linear-gradient(to bottom, var(--color-rose-border), transparent);
-  animation: scrollPulse 2.2s ease-in-out infinite;
+  animation: scrollPulse 2.4s ease-in-out infinite;
 }
 
 .scrollHint span {
-  font-size: 0.6rem;
-  font-weight: 500;
-  letter-spacing: 0.18em;
+  font-size: 0.57rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--color-blue-accent);
+  color: var(--color-rose-text);
+  opacity: 0.7;
 }
 
 @keyframes scrollPulse {
-  0%, 100% { opacity: 0.35; transform: scaleY(1); }
-  50%       { opacity: 1;    transform: scaleY(1.08); }
+  0%, 100% { opacity: 0.3; transform: scaleY(1); }
+  50%       { opacity: 1;   transform: scaleY(1.08); }
 }
 
 /* ── Responsivo ── */
 @media (max-width: 1024px) {
   .container {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 3.5rem;
   }
-  .visual {
-    order: -1;
-    padding: 0 1rem 3rem;
-  }
-  .photoFrame { width: 300px; }
+  .visual { order: -1; padding: 1rem 1rem 3.5rem; }
+  .photoFrame { width: 280px; }
   .badge { left: 0; bottom: -0.5rem; }
 }
 
 @media (max-width: 600px) {
-  .hero { padding: 7rem 1.25rem 4rem; }
-  .stats { gap: 1.25rem; }
+  .hero     { padding: 8rem 1.5rem 4.5rem; }
+  .stats    { flex-wrap: wrap; gap: 1.5rem; }
+  .statDivider { display: none; }
+  .stat     { padding: 0; }
   .scrollHint { display: none; }
-  .br { display: none; }
+  .br       { display: none; }
   .brHidden { display: inline; }
-  .visual { padding: 0 0 3rem; }
+  .visual   { padding: 0 0 3rem; }
   .badge {
     left: 50%;
     transform: translateX(-50%);
-    bottom: 0;
+    bottom: -0.25rem;
     white-space: nowrap;
     animation: none;
   }
+  .photoFrame { width: 260px; }
 }

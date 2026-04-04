@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import styles from './Services.module.css'
+import { useNavigation } from '../context/NavigationContext'
 
 const services = [
   {
@@ -63,17 +64,15 @@ export default function Services() {
   const [headerRef, headerVisible] = useScrollReveal(0.1)
   const [gridRef,   gridVisible]   = useScrollReveal(0.05)
   const tabRefs                    = useRef([])
+  const { navigate }               = useNavigation()
 
   /* ── Escuta o evento customizado disparado pelo Footer ── */
   useEffect(() => {
-    // Caso 1: usuário já está na página — recebe o evento direto
     const handleOpenService = (e) => {
       setActive(e.detail.index)
     }
     window.addEventListener('openService', handleOpenService)
 
-    // Caso 2: página acabou de carregar e havia um índice guardado no sessionStorage
-    // (ex.: o scroll ainda está acontecendo enquanto o componente monta)
     const stored = sessionStorage.getItem('openServiceIndex')
     if (stored !== null) {
       setActive(parseInt(stored, 10))
@@ -106,7 +105,7 @@ export default function Services() {
           ref={headerRef}
           className={`${styles.header} ${headerVisible ? styles.reveal : styles.hidden}`}
         >
-          <span className={styles.sectionTag} aria-hidden="true">02 — Áreas de Atuação</span>
+          <span className={styles.sectionTag} aria-hidden="true">Áreas de Atuação</span>
           <h2 id="services-heading" className={styles.title}>
             Como posso
             <em className={styles.titleAccent}> te ajudar?</em>
@@ -165,7 +164,11 @@ export default function Services() {
               <div className={styles.detailNum} aria-hidden="true">{s.id}</div>
               <h3 className={styles.detailTitle}>{s.title}</h3>
               <p className={styles.detailDesc}>{s.description}</p>
-              <a href="#contato" className={styles.detailCta}>
+              <a
+                href="#contato"
+                className={styles.detailCta}
+                onClick={(e) => { e.preventDefault(); navigate('contact') }}
+              >
                 Consultar sobre este assunto
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                   <path d="M5 12h14M12 5l7 7-7 7" />

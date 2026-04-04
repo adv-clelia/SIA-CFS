@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# ─────────────────────────────────────────────
+# Variáveis de ambiente — NUNCA versionar
+# Contêm credenciais sensíveis (EmailJS, APIs, etc.)
+# Use .env.example como referência de estrutura.
+# ─────────────────────────────────────────────
+.env
+.env.*
+!.env.example

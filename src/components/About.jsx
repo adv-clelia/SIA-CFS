@@ -1,5 +1,6 @@
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import styles from './About.module.css'
+import { useNavigation } from '../context/NavigationContext'
 
 const credentials = [
   {
@@ -29,12 +30,13 @@ const values = ['Ética Profissional', 'Transparência', 'Dedicação', 'Resulta
 export default function About() {
   const [imageRef, imageVisible] = useScrollReveal(0.1)
   const [textRef,  textVisible]  = useScrollReveal(0.1)
+  const { navigate }             = useNavigation()
 
   return (
     <section id="sobre" className={styles.about} aria-labelledby="about-heading">
       <div className={styles.container}>
         <div className={styles.labelRow}>
-          <span className={styles.sectionTag} aria-hidden="true">01 — Sobre mim</span>
+          <span className={styles.sectionTag} aria-hidden="true">Sobre mim</span>
         </div>
 
         <div className={styles.grid}>
@@ -99,7 +101,11 @@ export default function About() {
               ))}
             </ul>
 
-            <a href="#contato" className={styles.cta}>
+            <a
+              href="#contato"
+              className={styles.cta}
+              onClick={(e) => { e.preventDefault(); navigate('contact') }}
+            >
               Agende uma conversa
               <span className={styles.ctaArrow} aria-hidden="true">→</span>
             </a>

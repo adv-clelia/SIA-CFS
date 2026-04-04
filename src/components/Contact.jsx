@@ -3,15 +3,16 @@ import emailjs from '@emailjs/browser'
 import styles from './Contact.module.css'
 
 // ─────────────────────────────────────────────
-// Cole aqui suas credenciais do EmailJS
+// Credenciais via variáveis de ambiente (Vite)
+// Nunca commitar valores sensíveis no repositório.
+// Configure o arquivo .env na raiz do projeto.
 // ─────────────────────────────────────────────
-const EMAILJS_SERVICE_ID  = 'service_p1qvbtj'
-const EMAILJS_TEMPLATE_ID = 'template_kniverq'
-const EMAILJS_PUBLIC_KEY  = 'GzORWCVcAi6I4mcHb'
+const EMAILJS_SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
+const EMAILJS_PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
 const MAPS_URL = 'https://maps.google.com/?q=Rua+Leopoldino+Araújo,+325,+Itanhaém,+SP'
 
-// Regex RFC-5322 simplificado — cobre 99 % dos casos reais
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 
 export default function Contact() {
@@ -33,22 +34,19 @@ export default function Contact() {
   const validate = () => {
     const newErrors = {}
 
-    if (!form.nome.trim()) {
+    if (!form.nome.trim())
       newErrors.nome = 'Por favor, informe seu nome.'
-    }
 
-    if (!form.email.trim()) {
+    if (!form.email.trim())
       newErrors.email = 'Por favor, informe seu e-mail.'
-    } else if (!EMAIL_REGEX.test(form.email.trim())) {
+    else if (!EMAIL_REGEX.test(form.email.trim()))
       newErrors.email = 'Por favor, informe um e-mail válido.'
-    }
 
     const digitsOnly = form.telefone.replace(/\D/g, '')
-    if (!form.telefone.trim()) {
+    if (!form.telefone.trim())
       newErrors.telefone = 'Por favor, informe seu telefone.'
-    } else if (digitsOnly.length < 10) {
+    else if (digitsOnly.length < 10)
       newErrors.telefone = 'Informe um telefone com DDD e ao menos 8 dígitos.'
-    }
 
     return newErrors
   }
@@ -59,7 +57,6 @@ export default function Contact() {
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
-      // Foca o primeiro campo inválido para leitores de tela
       document.getElementById(Object.keys(newErrors)[0])?.focus()
       return
     }
@@ -77,13 +74,12 @@ export default function Contact() {
       setSent(true)
     } catch (err) {
       console.error('EmailJS error:', err)
-      setSendError('Não foi possível enviar a mensagem. Tente novamente ou entre em contato pelo WhatsApp.')
+      setSendError('Não foi possível enviar a mensagem. Tente pelo WhatsApp.')
     } finally {
       setSending(false)
     }
   }
 
-  /* Reseta o formulário para enviar nova mensagem */
   const handleReset = () => {
     setForm({ nome: '', email: '', telefone: '', assunto: '', mensagem: '' })
     setErrors({})
@@ -94,7 +90,7 @@ export default function Contact() {
   const contactInfo = [
     {
       icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
         </svg>
       ),
@@ -104,7 +100,7 @@ export default function Contact() {
     },
     {
       icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
           <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
           <polyline points="22,6 12,13 2,6" />
         </svg>
@@ -115,18 +111,18 @@ export default function Contact() {
     },
     {
       icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
           <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
           <circle cx="12" cy="10" r="3" />
         </svg>
       ),
       label: 'Endereço',
-      value: 'Rua Leopoldino Araújo, 325, Sala 2 — Centro, Itanhaém/SP',
+      value: 'Rua Leopoldino Araújo, 325, Sala 2 — Itanhaém/SP',
       href:  MAPS_URL,
     },
     {
       icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
           <circle cx="12" cy="12" r="10" />
           <polyline points="12 6 12 12 16 14" />
         </svg>
@@ -143,20 +139,21 @@ export default function Contact() {
 
         {/* ── Informações de contato ── */}
         <div className={styles.info}>
-          <span className={styles.sectionTag} aria-hidden="true">03 — Contato</span>
           <h2 id="contact-heading" className={styles.title}>
-            Vamos conversar<em className={styles.titleAccent}>?</em>
+            Vamos<br />
+            conversar<em className={styles.titleAccent}>?</em>
           </h2>
+
           <p className={styles.subtitle}>
             Entre em contato para agendar uma consulta ou tirar dúvidas.
-            Respondemos em até 24 horas.
+            Respondemos em até 24 horas úteis.
           </p>
 
           <address className={styles.contactList}>
             {contactInfo.map((c) => (
               <div key={c.label} className={styles.contactItem}>
                 <div className={styles.contactIcon}>{c.icon}</div>
-                <div>
+                <div className={styles.contactText}>
                   <p className={styles.contactLabel}>{c.label}</p>
                   {c.href ? (
                     <a
@@ -176,6 +173,8 @@ export default function Contact() {
             ))}
           </address>
 
+          <div className={styles.infoDivider} aria-hidden="true" />
+
           <a
             href="https://wa.me/5513982148845"
             target="_blank"
@@ -194,166 +193,180 @@ export default function Contact() {
         <div className={styles.formWrap}>
           {sent ? (
             <div className={styles.successMsg} role="status" aria-live="polite" aria-atomic="true">
-              <div className={styles.successIcon} aria-hidden="true">✓</div>
+              <div className={styles.successIconWrap} aria-hidden="true">✓</div>
               <h3>Mensagem enviada!</h3>
               <p>Entraremos em contato em breve. Obrigada pelo interesse.</p>
               <button
                 type="button"
-                className={styles.submit}
-                style={{ marginTop: '1rem', width: 'auto', padding: '0.75rem 1.75rem' }}
+                className={styles.successBtn}
                 onClick={handleReset}
               >
                 Enviar nova mensagem
               </button>
             </div>
           ) : (
-            <form
-              ref={formRef}
-              className={styles.form}
-              onSubmit={handleSubmit}
-              noValidate
-              aria-label="Formulário de contato"
-            >
-              <div className={styles.formRow}>
-                {/* Nome */}
-                <div className={styles.field}>
-                  <label htmlFor="nome" className={styles.label}>
-                    Nome completo <span aria-hidden="true">*</span>
-                    <span className="sr-only">(obrigatório)</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="nome"
-                    name="nome"
-                    required
-                    autoComplete="name"
-                    className={`${styles.input} ${errors.nome ? styles.inputError : ''}`}
-                    placeholder="Seu nome"
-                    value={form.nome}
-                    onChange={handleChange}
-                    aria-required="true"
-                    aria-invalid={!!errors.nome}
-                    aria-describedby={errors.nome ? 'nome-error' : undefined}
-                  />
-                  {errors.nome && (
-                    <span id="nome-error" className={styles.errorMsg} role="alert">{errors.nome}</span>
-                  )}
-                </div>
+            <>
+              <p className={styles.formTitle}>Envie uma mensagem</p>
+              <p className={styles.formSubtitle}>Preencha o formulário e retornaremos em até 24h</p>
 
-                {/* Telefone */}
-                <div className={styles.field}>
-                  <label htmlFor="telefone" className={styles.label}>
-                    Telefone / WhatsApp <span aria-hidden="true">*</span>
-                    <span className="sr-only">(obrigatório)</span>
-                  </label>
-                  <input
-                    type="tel"
-                    id="telefone"
-                    name="telefone"
-                    required
-                    autoComplete="tel"
-                    inputMode="tel"
-                    className={`${styles.input} ${errors.telefone ? styles.inputError : ''}`}
-                    placeholder="(13) 98214-8845"
-                    value={form.telefone}
-                    onChange={handleChange}
-                    aria-required="true"
-                    aria-invalid={!!errors.telefone}
-                    aria-describedby={errors.telefone ? 'telefone-error' : undefined}
-                  />
-                  {errors.telefone && (
-                    <span id="telefone-error" className={styles.errorMsg} role="alert">{errors.telefone}</span>
-                  )}
-                </div>
-              </div>
-
-              {/* E-mail */}
-              <div className={styles.field}>
-                <label htmlFor="email" className={styles.label}>
-                  E-mail <span aria-hidden="true">*</span>
-                  <span className="sr-only">(obrigatório)</span>
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  autoComplete="email"
-                  inputMode="email"
-                  className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
-                  placeholder="seu@email.com"
-                  value={form.email}
-                  onChange={handleChange}
-                  aria-required="true"
-                  aria-invalid={!!errors.email}
-                  aria-describedby={errors.email ? 'email-error' : undefined}
-                />
-                {errors.email && (
-                  <span id="email-error" className={styles.errorMsg} role="alert">{errors.email}</span>
-                )}
-              </div>
-
-              {/* Assunto */}
-              <div className={styles.field}>
-                <label htmlFor="assunto" className={styles.label}>Assunto</label>
-                <select
-                  id="assunto"
-                  name="assunto"
-                  className={styles.input}
-                  value={form.assunto}
-                  onChange={handleChange}
-                >
-                  <option value="">Selecione a área</option>
-                  <option>Direito de Família</option>
-                  <option>Direito Trabalhista</option>
-                  <option>Direito Imobiliário</option>
-                  <option>Direito do Consumidor</option>
-                  <option>Outro</option>
-                </select>
-              </div>
-
-              {/* Mensagem */}
-              <div className={styles.field}>
-                <label htmlFor="mensagem" className={styles.label}>Mensagem</label>
-                <textarea
-                  id="mensagem"
-                  name="mensagem"
-                  className={`${styles.input} ${styles.textarea}`}
-                  placeholder="Descreva brevemente sua situação..."
-                  rows={5}
-                  value={form.mensagem}
-                  onChange={handleChange}
-                  aria-describedby="form-privacy"
-                />
-              </div>
-
-              {/* Erro de envio */}
-              {sendError && (
-                <p className={styles.errorMsg} role="alert" style={{ textAlign: 'center', fontSize: '0.82rem' }}>
-                  {sendError}
-                </p>
-              )}
-
-              <button
-                type="submit"
-                className={styles.submit}
-                disabled={sending}
-                aria-busy={sending}
+              <form
+                ref={formRef}
+                className={styles.form}
+                onSubmit={handleSubmit}
+                noValidate
+                aria-label="Formulário de contato"
               >
-                {sending ? 'Enviando…' : 'Enviar mensagem'}
-                {!sending && (
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                    <line x1="22" y1="2" x2="11" y2="13" />
-                    <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                  </svg>
-                )}
-              </button>
+                <div className={styles.formRow}>
+                  {/* Nome */}
+                  <div className={styles.field}>
+                    <label htmlFor="nome" className={styles.label}>
+                      Nome completo <span aria-hidden="true">*</span>
+                      <span className="sr-only">(obrigatório)</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="nome"
+                      name="nome"
+                      required
+                      autoComplete="name"
+                      className={`${styles.input} ${errors.nome ? styles.inputError : ''}`}
+                      placeholder="Seu nome"
+                      value={form.nome}
+                      onChange={handleChange}
+                      aria-required="true"
+                      aria-invalid={!!errors.nome}
+                      aria-describedby={errors.nome ? 'nome-error' : undefined}
+                    />
+                    {errors.nome && (
+                      <span id="nome-error" className={styles.errorMsg} role="alert">{errors.nome}</span>
+                    )}
+                  </div>
 
-              <p id="form-privacy" className={styles.privacy}>
-                <span aria-hidden="true">🔒</span>{' '}
-                Suas informações são confidenciais e protegidas.
-              </p>
-            </form>
+                  {/* Telefone */}
+                  <div className={styles.field}>
+                    <label htmlFor="telefone" className={styles.label}>
+                      Telefone / WhatsApp <span aria-hidden="true">*</span>
+                      <span className="sr-only">(obrigatório)</span>
+                    </label>
+                    <input
+                      type="tel"
+                      id="telefone"
+                      name="telefone"
+                      required
+                      autoComplete="tel"
+                      inputMode="tel"
+                      className={`${styles.input} ${errors.telefone ? styles.inputError : ''}`}
+                      placeholder="(13) 98214-8845"
+                      value={form.telefone}
+                      onChange={handleChange}
+                      aria-required="true"
+                      aria-invalid={!!errors.telefone}
+                      aria-describedby={errors.telefone ? 'telefone-error' : undefined}
+                    />
+                    {errors.telefone && (
+                      <span id="telefone-error" className={styles.errorMsg} role="alert">{errors.telefone}</span>
+                    )}
+                  </div>
+                </div>
+
+                {/* E-mail */}
+                <div className={styles.field}>
+                  <label htmlFor="email" className={styles.label}>
+                    E-mail <span aria-hidden="true">*</span>
+                    <span className="sr-only">(obrigatório)</span>
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    autoComplete="email"
+                    inputMode="email"
+                    className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
+                    placeholder="seu@email.com"
+                    value={form.email}
+                    onChange={handleChange}
+                    aria-required="true"
+                    aria-invalid={!!errors.email}
+                    aria-describedby={errors.email ? 'email-error' : undefined}
+                  />
+                  {errors.email && (
+                    <span id="email-error" className={styles.errorMsg} role="alert">{errors.email}</span>
+                  )}
+                </div>
+
+                {/* Assunto */}
+                <div className={styles.field}>
+                  <label htmlFor="assunto" className={styles.label}>Área de interesse</label>
+                  <div className={styles.selectWrap}>
+                    <select
+                      id="assunto"
+                      name="assunto"
+                      className={styles.input}
+                      value={form.assunto}
+                      onChange={handleChange}
+                    >
+                      <option value="">Selecione a área</option>
+                      <option>Direito de Família</option>
+                      <option>Direito Trabalhista</option>
+                      <option>Direito Imobiliário</option>
+                      <option>Direito do Consumidor</option>
+                      <option>Outro</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Mensagem */}
+                <div className={styles.field}>
+                  <label htmlFor="mensagem" className={styles.label}>Mensagem</label>
+                  <textarea
+                    id="mensagem"
+                    name="mensagem"
+                    className={`${styles.input} ${styles.textarea}`}
+                    placeholder="Descreva brevemente sua situação..."
+                    rows={4}
+                    value={form.mensagem}
+                    onChange={handleChange}
+                    aria-describedby="form-privacy"
+                  />
+                </div>
+
+                {/* Erro de envio */}
+                {sendError && (
+                  <div className={styles.sendError} role="alert">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" y1="8" x2="12" y2="12" />
+                      <line x1="12" y1="16" x2="12.01" y2="16" />
+                    </svg>
+                    {sendError}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  className={styles.submit}
+                  disabled={sending}
+                  aria-busy={sending}
+                >
+                  {sending ? 'Enviando…' : 'Enviar mensagem'}
+                  {!sending && (
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                      <line x1="22" y1="2" x2="11" y2="13" />
+                      <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                    </svg>
+                  )}
+                </button>
+
+                <p id="form-privacy" className={styles.privacy}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                  Suas informações são confidenciais e protegidas.
+                </p>
+              </form>
+            </>
           )}
         </div>
       </div>

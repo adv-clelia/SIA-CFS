@@ -36,7 +36,7 @@ export default function About() {
     <section id="sobre" className={styles.about} aria-labelledby="about-heading">
       <div className={styles.container}>
         <div className={styles.labelRow}>
-          <span className={styles.sectionTag} aria-hidden="true">Sobre mim</span>
+          <span className={styles.sectionTag} aria-hidden="true">Sobre</span>
         </div>
 
         <div className={styles.grid}>

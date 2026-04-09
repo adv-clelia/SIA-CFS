@@ -149,7 +149,7 @@ export default function Footer() {
         {/* Rodapé inferior */}
         <div className={styles.bottom}>
           <p className={styles.copy}>
-            © {year} Dra. Clelia Francisco da Silva — OAB/SP Nº 313.044. Todos os direitos reservados.
+            © {year} Dra. Clelia Francisco da Silva — CNPJ 62.885.379/0001-11. Todos os direitos reservados.
           </p>
           <p className={styles.disclaimer}>
             <em>Este site tem caráter informativo e não constitui consultoria jurídica.</em>

@@ -14,8 +14,8 @@ const credentials = [
     sub: 'PUC — São Paulo',
   },
   {
-    label: 'OAB',
-    value: 'Nº 313.044 — SP',
+    label: 'CNPJ',
+    value: '62.885.379/0001-11',
     sub: null,
   },
   {

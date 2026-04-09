@@ -59,6 +59,28 @@ const services = [
   },
 ]
 
+/* Conteúdo do painel — reutilizado no desktop e no accordion mobile */
+function PanelContent({ s, navigate }) {
+  return (
+    <>
+      <div className={styles.detailIcon}>{s.icon}</div>
+      <div className={styles.detailNum} aria-hidden="true">{s.id}</div>
+      <h3 className={styles.detailTitle}>{s.title}</h3>
+      <p className={styles.detailDesc}>{s.description}</p>
+      <a
+        href="#contato"
+        className={styles.detailCta}
+        onClick={(e) => { e.preventDefault(); navigate('contact') }}
+      >
+        Consultar sobre este assunto
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </a>
+    </>
+  )
+}
+
 export default function Services() {
   const [active, setActive]        = useState(0)
   const [headerRef, headerVisible] = useScrollReveal(0.1)
@@ -97,6 +119,11 @@ export default function Services() {
     }
   }, [])
 
+  /* Toggle accordion no mobile: clique no item ativo fecha */
+  const handleClick = (i) => {
+    setActive(prev => prev === i ? -1 : i)
+  }
+
   return (
     <section id="atuacao" className={styles.services} aria-labelledby="services-heading">
       <div className={styles.container}>
@@ -128,52 +155,62 @@ export default function Services() {
             className={styles.list}
           >
             {services.map((s, i) => (
-              <button
-                key={s.id}
-                role="tab"
-                id={`tab-${s.id}`}
-                aria-selected={active === i}
-                aria-controls={`panel-${s.id}`}
-                ref={(el) => (tabRefs.current[i] = el)}
-                className={`${styles.item} ${active === i ? styles.itemActive : ''}`}
-                onClick={() => setActive(i)}
-                onKeyDown={(e) => handleKeyDown(e, i)}
-                tabIndex={active === i ? 0 : -1}
-              >
-                <span className={styles.itemNum} aria-hidden="true">{s.id}</span>
-                <div className={styles.itemText}>
-                  <span className={styles.itemTitle}>{s.title}</span>
-                  <span className={styles.itemShort}>{s.short}</span>
+              <div key={s.id} className={styles.listItem}>
+                <button
+                  role="tab"
+                  id={`tab-${s.id}`}
+                  aria-selected={active === i}
+                  aria-controls={`panel-${s.id}`}
+                  aria-expanded={active === i}
+                  ref={(el) => (tabRefs.current[i] = el)}
+                  className={`${styles.item} ${active === i ? styles.itemActive : ''}`}
+                  onClick={() => handleClick(i)}
+                  onKeyDown={(e) => handleKeyDown(e, i)}
+                  tabIndex={active === i ? 0 : -1}
+                >
+                  <span className={styles.itemNum} aria-hidden="true">{s.id}</span>
+                  <div className={styles.itemText}>
+                    <span className={styles.itemTitle}>{s.title}</span>
+                    <span className={styles.itemShort}>{s.short}</span>
+                  </div>
+                  {/* Seta: chevron no mobile, → no desktop */}
+                  <span className={styles.itemArrowDesktop} aria-hidden="true">→</span>
+                  <svg
+                    className={`${styles.itemChevron} ${active === i ? styles.itemChevronOpen : ''}`}
+                    width="16" height="16" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" strokeWidth="2"
+                    aria-hidden="true"
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </button>
+
+                {/* Painel inline — visível apenas no mobile via CSS */}
+                <div
+                  id={`panel-${s.id}`}
+                  role="tabpanel"
+                  aria-labelledby={`tab-${s.id}`}
+                  className={`${styles.inlinePanel} ${active === i ? styles.inlinePanelOpen : ''}`}
+                >
+                  <div className={styles.inlinePanelInner}>
+                    <PanelContent s={s} navigate={navigate} />
+                  </div>
                 </div>
-                <span className={styles.itemArrow} aria-hidden="true">→</span>
-              </button>
+              </div>
             ))}
           </div>
 
-          {/* Painel de detalhes */}
+          {/* Painel de detalhes — visível apenas no desktop via CSS */}
           {services.map((s, i) => (
             <div
               key={s.id}
               role="tabpanel"
-              id={`panel-${s.id}`}
+              id={`panel-desktop-${s.id}`}
               aria-labelledby={`tab-${s.id}`}
               className={`${styles.detail} ${active === i ? styles.detailVisible : styles.detailHidden}`}
               hidden={active !== i}
             >
-              <div className={styles.detailIcon}>{s.icon}</div>
-              <div className={styles.detailNum} aria-hidden="true">{s.id}</div>
-              <h3 className={styles.detailTitle}>{s.title}</h3>
-              <p className={styles.detailDesc}>{s.description}</p>
-              <a
-                href="#contato"
-                className={styles.detailCta}
-                onClick={(e) => { e.preventDefault(); navigate('contact') }}
-              >
-                Consultar sobre este assunto
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </a>
+              <PanelContent s={s} navigate={navigate} />
             </div>
           ))}
         </div>

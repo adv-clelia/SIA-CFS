@@ -21,8 +21,6 @@
   z-index: 0;
 }
 
-/* Gradiente services→footer removido — transição limpa entre seções */
-
 .container {
   position: relative;
   z-index: 1;
@@ -56,7 +54,6 @@
   letter-spacing: -0.02em;
 }
 
-/* Mesmo estilo do título — sem quebra de cor ou fonte na frase */
 .titleAccent {
   color: inherit;
   font-style: normal;
@@ -84,12 +81,18 @@
   border-top: 1px solid var(--color-border);
 }
 
+/* Wrapper de cada item — necessário para o accordion mobile */
+.listItem {
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+}
+
 .item {
   display: flex;
   align-items: center;
   gap: 1.5rem;
   padding: 1.5rem 1.25rem 1.5rem 0.75rem;
-  border-bottom: 1px solid var(--color-border);
   text-align: left;
   cursor: pointer;
   width: 100%;
@@ -97,6 +100,8 @@
   color: inherit;
   border-radius: 0;
   border-left: 2px solid transparent;
+  /* Remove a borda inferior individual — agora está no .listItem */
+  border-bottom: none;
   transition:
     background var(--transition),
     border-left-color var(--transition),
@@ -156,21 +161,63 @@
   display: block;
 }
 
-.itemArrow {
+/* Seta → do desktop */
+.itemArrowDesktop {
   color: var(--color-rose-text);
   opacity: 0;
   font-size: 0.9rem;
   flex-shrink: 0;
   transition: opacity var(--transition), transform var(--transition);
+  display: block; /* visível no desktop */
 }
 
-.item:hover .itemArrow,
-.itemActive .itemArrow {
+.item:hover .itemArrowDesktop,
+.itemActive .itemArrowDesktop {
   opacity: 1;
   transform: translateX(3px);
 }
 
-/* ── Painel de detalhe ── */
+/* Chevron ↓ do mobile */
+.itemChevron {
+  display: none; /* oculto no desktop */
+  flex-shrink: 0;
+  color: var(--color-rose-text);
+  opacity: 0.7;
+  transition: transform var(--transition), opacity var(--transition);
+}
+
+.itemChevronOpen {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+/* ── Painel inline (accordion mobile) ── */
+.inlinePanel {
+  display: none; /* oculto no desktop */
+  overflow: hidden;
+  max-height: 0;
+  transition:
+    max-height 0.42s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.35s var(--ease);
+  opacity: 0;
+}
+
+.inlinePanelOpen {
+  max-height: 800px;
+  opacity: 1;
+}
+
+.inlinePanelInner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.75rem 1.25rem 1.75rem 1.25rem;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  margin: 0 0 1rem 0;
+}
+
+/* ── Painel de detalhe (desktop — coluna direita) ── */
 .detail {
   position: sticky;
   top: 7rem;
@@ -279,22 +326,33 @@
   transition: opacity 0.75s var(--ease), transform 0.75s var(--ease);
 }
 
-/* ── Responsivo ── */
+/* ── Responsivo — accordion ativo abaixo de 1024px ── */
 @media (max-width: 1024px) {
   .grid {
-    grid-template-columns: 1fr;
     display: flex;
     flex-direction: column;
   }
-  .detail {
-    position: static;
-    order: 2;
-  }
-  .list { order: 1; }
+
+  /* Oculta o painel de coluna direita — o accordion substitui */
+  .detail { display: none !important; }
+
+  /* Mostra o chevron, oculta a seta → */
+  .itemChevron      { display: block; }
+  .itemArrowDesktop { display: none; }
+
+  /* Ativa o accordion inline */
+  .inlinePanel { display: block; }
 }
 
 @media (max-width: 600px) {
   .services { padding: var(--spacing-lg) 1.5rem; }
-  .detail   { padding: 2.25rem 1.75rem; }
-  .detail::before { left: 1.75rem; right: 1.75rem; }
+  .header   { margin-bottom: 3rem; }
+
+  .inlinePanelInner {
+    padding: 1.25rem;
+    margin: 0 0 0.75rem;
+  }
+
+  /* Número grande fica desproporcional em telas muito pequenas */
+  .detailNum { font-size: 3rem; }
 }

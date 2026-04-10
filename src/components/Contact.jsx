@@ -77,7 +77,7 @@ const contactInfo = [
       </svg>
     ),
     label: "Endereço",
-    value: "Rua Leopoldino Araújo, 325 — Sala 2, Itanhaém/SP",
+    value: " Rua Leopoldino Araujo, 325, sala 2, centro, Itanhaém/SP - CEP 11740-064",
     href: MAPS_URL,
   },
   {
